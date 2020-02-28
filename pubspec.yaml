@@ -25,6 +25,9 @@ dependencies:
   fancy_bottom_navigation: ^0.3.2
   dio: ^3.0.9
   cached_network_image: ^2.0.0
+  video_player: ^0.10.8+1
+  audioplayers: ^0.14.0
+  path_provider: ^1.6.1
 
 dev_dependencies:
   flutter_test:
@@ -45,6 +48,9 @@ flutter:
   assets:
     - assets/logo.png
     - assets/alucard.jpg
+    - assets/001-boy.png
+    - assets/fine-cut.mp3
+    - assets/loveyou-cut.mp4
   # fonts:
   #     - family: Nunito
   #       fonts:

@@ -67,17 +67,21 @@ class API {
       // initial interceptor
       print("initial interceptor");
       dio.interceptors.add(tokenInterceptor);
-      // initial jwt
-      SharedPreferences.getInstance().then((prefs) {
-        String tokenPref = prefs.getString('token');
-        if (tokenPref != null) {
-          print("set token: $tokenPref");
-          token = tokenPref;
-          options.headers['X-Access-Token'] = token;
-        }
-      });
     }
+    checkAndSetToken();
     return _instance;
+  }
+
+  static checkAndSetToken() async {
+    if (options.headers['X-Access-Token'] == null) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String tokenPref = prefs.getString('token');
+      if (tokenPref != null) {
+        print("set token: $tokenPref");
+        token = tokenPref;
+        options.headers['X-Access-Token'] = token;
+      }
+    }
   }
 
   /*
@@ -223,6 +227,7 @@ class API {
   Future<List> getXsList(pageNo, pageSize,
       {String column = 'createTime', String order = 'desc'}) async {
     try {
+      await checkAndSetToken();
       Response response = await dio.get(
         '/xs/qbSwxszb/list',
         queryParameters: {
@@ -238,9 +243,66 @@ class API {
       print(e);
     }
   }
+  /*
+    The request use query string parameter
+    id: xxx
 
+    The response is like this
+    {
+        "success": true,
+        "message": "操作成功！",
+        "code": 200,
+        "result": [{
+            "id": "15828104564090",
+            "wjlj": "loveyou-cut_1582810462457.mp4",
+            "fjmc": "loveyou",
+            "fjscsj": null,
+            "swxsbh": "6513",
+            "scsbbm": "123",
+            "createBy": "admin",
+            "createTime": "2020-02-27",
+            "updateBy": null,
+            "updateTime": null
+        }, {
+            "id": "15828104689741",
+            "wjlj": "fine-cut_1582810473855.mp3",
+            "fjmc": "fine",
+            "fjscsj": null,
+            "swxsbh": "6513",
+            "scsbbm": "234",
+            "createBy": "admin",
+            "createTime": "2020-02-27",
+            "updateBy": null,
+            "updateTime": null
+        }, {
+            "id": "15828104793522",
+            "wjlj": "001-boy_1582810485531.png",
+            "fjmc": "body",
+            "fjscsj": null,
+            "swxsbh": "6513",
+            "scsbbm": "345",
+            "createBy": "admin",
+            "createTime": "2020-02-27",
+            "updateBy": null,
+            "updateTime": null
+        }, {
+            "id": "15828104905953",
+            "wjlj": "diveintopython_1582810536572.pdf",
+            "fjmc": "python",
+            "fjscsj": null,
+            "swxsbh": "6513",
+            "scsbbm": "456",
+            "createBy": "admin",
+            "createTime": "2020-02-27",
+            "updateBy": null,
+            "updateTime": null
+        }],
+        "timestamp": 1582810644035
+    }
+    */
   Future<List> getXsFj(id) async {
     try {
+      await checkAndSetToken();
       Response response = await dio.get(
         '/xs/qbSwxszb/queryQbSwxszbfjByMainId',
         queryParameters: {'id': id},
@@ -277,6 +339,7 @@ class API {
    */
   Future<List> addXs(Map data) async {
     try {
+      await checkAndSetToken();
       Response response = await dio.post(
         '/xs/qbSwxszb/add',
         data: data,
@@ -335,6 +398,7 @@ class API {
   */
   Future<List> editXs(Map data) async {
     try {
+      await checkAndSetToken();
       Response response = await dio.put(
         '/xs/qbSwxszb/edit',
         data: data,
@@ -362,6 +426,7 @@ class API {
    */
   Future<List> deleteXs(String id) async {
     try {
+      await checkAndSetToken();
       Response response = await dio.delete(
         '/xs/qbSwxszb/delete',
         queryParameters: {
@@ -394,6 +459,7 @@ class API {
   */
   Future<List> upload(filePath) async {
     try {
+      await checkAndSetToken();
       Response response = await dio.post('/sys/common/upload',
           data: FormData.fromMap(
               {'isup': 1, "file": await MultipartFile.fromFile(filePath)}));
@@ -404,5 +470,9 @@ class API {
     } catch (e) {
       print(e);
     }
+  }
+
+  static String getStaticFilePath(fileName) {
+    return '$baseUrl/sys/common/static/$fileName';
   }
 }
