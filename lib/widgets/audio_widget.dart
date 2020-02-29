@@ -11,9 +11,9 @@ class AudioWidget extends StatefulWidget {
       this.height = 150,
       this.loop = true})
       : super(key: key);
-  String source;
-  double width, height;
-  bool loop;
+  final String source;
+  final double width, height;
+  final bool loop;
   @override
   State<StatefulWidget> createState() {
     return AudioWidgetState();
@@ -37,7 +37,7 @@ class AudioWidgetState extends State<AudioWidget> {
     //是否打印日志
     AudioPlayer.logEnabled = true;
     //设置地址，并不播放，调用player.resume开始播放
-    audioPlayer.play(widget.source, isLocal: false);
+    // audioPlayer.play(widget.source, isLocal: false);
     // 播放本地音频
 //    Future<Directory> _externalDocumentsDirectory =
 //        getExternalStorageDirectory().then((Directory directory) {
@@ -210,13 +210,14 @@ class AudioWidgetState extends State<AudioWidget> {
 
   @override
   void dispose() {
+    cleanup();
     super.dispose();
+  }
+
+  void cleanup() async {
     player.clear(widget.source);
-    player.fixedPlayer.stop();
-    player.fixedPlayer.release();
-    player.fixedPlayer.dispose();
-    audioPlayer.stop();
-    audioPlayer.release();
-    audioPlayer.dispose();
+    await player.fixedPlayer.stop();
+    await player.fixedPlayer.release();
+    await player.fixedPlayer.dispose();
   }
 }

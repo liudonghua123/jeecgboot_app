@@ -5,11 +5,16 @@ import '../utils.dart';
 
 class VideoWidget extends StatefulWidget {
   VideoWidget(
-      {Key key, @required this.source, this.width = 300, this.height = 300, this.loop = true})
+      {Key key,
+      @required this.source,
+      this.width = 300,
+      this.height = 300,
+      this.loop = true,
+      this.title = ''})
       : super(key: key);
-  String source;
-  double width, height;
-  bool loop;
+  final String source, title;
+  final double width, height;
+  final bool loop;
   @override
   State<StatefulWidget> createState() {
     return VideoWidgetState();
@@ -128,6 +133,7 @@ class VideoWidgetState extends State<VideoWidget> {
                                         SystemUiOverlay.bottom
                                       ]);
                                       hideAppBar = false;
+                                      fullScreen = false;
                                     } else {
                                       print('关闭');
                                       Navigator.pop(context);
@@ -140,7 +146,7 @@ class VideoWidgetState extends State<VideoWidget> {
                                 ),
                               ),
                               Text(
-                                '标题',
+                                widget.title,
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 18),
                               ),
