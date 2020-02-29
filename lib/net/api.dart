@@ -38,7 +38,7 @@ class API {
       print(
           "RESPONSE[${response?.statusCode}] => PATH: ${response?.request?.path}");
       if (response?.statusCode == 500 &&
-          response?.data?.message == "Token失效，请重新登录") {
+          response?.data['message'] == "Token失效，请重新登录") {
         // 清除token信息
         SharedPreferences.getInstance().then((prefs) {
           prefs.remove('token');
