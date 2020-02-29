@@ -37,6 +37,62 @@ MultiMediaDialog({String title = 'MultiMedia', @required Widget content}) =>
       content: content,
     );
 
+enum MEDIA_TYPE {
+  video,
+  audio,
+  picture,
+  file,
+}
+
+MEDIA_TYPE guessFileType(String fileName) {
+  RegExp videoRegExp = new RegExp(r".(mp4|avi)$");
+  RegExp audioRegExp = new RegExp(r".(mp3|wma|wav)$");
+  RegExp pictureRegExp = new RegExp(r".(png|jpg|jpeg|gif|bmp)$");
+  if (videoRegExp.hasMatch(fileName)) {
+    return MEDIA_TYPE.video;
+  } else if (audioRegExp.hasMatch(fileName)) {
+    return MEDIA_TYPE.audio;
+  } else if (pictureRegExp.hasMatch(fileName)) {
+    return MEDIA_TYPE.picture;
+  } else {
+    return MEDIA_TYPE.file;
+  }
+}
+
+Widget getLeadingIcon(String fileName) {
+  MEDIA_TYPE fileType = guessFileType(fileName);
+  Icon icon;
+  switch (fileType) {
+    case MEDIA_TYPE.video:
+      icon = Icon(
+        Icons.music_video,
+        color: Colors.blue,
+        size: 30.0,
+      );
+      break;
+    case MEDIA_TYPE.audio:
+      icon = Icon(
+        Icons.audiotrack,
+        color: Colors.green,
+        size: 30.0,
+      );
+      break;
+    case MEDIA_TYPE.picture:
+      icon = Icon(
+        Icons.photo,
+        color: Colors.yellow,
+        size: 30.0,
+      );
+      break;
+    default:
+      icon = Icon(
+        Icons.insert_drive_file,
+        color: Colors.grey,
+        size: 30.0,
+      );
+  }
+  return icon;
+}
 
 class TimeUtils {
   static String getCurrentPosition(int seconds) {

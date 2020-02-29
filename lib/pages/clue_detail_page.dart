@@ -13,13 +13,6 @@ class ClueDetailPage extends StatefulWidget {
   _ClueDetailPageState createState() => _ClueDetailPageState();
 }
 
-enum MEDIA_TYPE {
-  video,
-  audio,
-  picture,
-  file,
-}
-
 class _ClueDetailPageState extends State<ClueDetailPage> {
   List clueFjList = [];
   bool _loading;
@@ -39,54 +32,6 @@ class _ClueDetailPageState extends State<ClueDetailPage> {
     super.initState();
   }
 
-  MEDIA_TYPE guessFileType(String fileName) {
-    if (fileName.endsWith('.mp4')) {
-      return MEDIA_TYPE.video;
-    } else if (fileName.endsWith('.mp3')) {
-      return MEDIA_TYPE.audio;
-    } else if (fileName.endsWith('.png') ||
-        fileName.endsWith('.jpg') ||
-        fileName.endsWith('.gif')) {
-      return MEDIA_TYPE.picture;
-    } else {
-      return MEDIA_TYPE.file;
-    }
-  }
-
-  Widget getLeadingIcon(String fileName) {
-    MEDIA_TYPE fileType = guessFileType(fileName);
-    Icon icon;
-    switch (fileType) {
-      case MEDIA_TYPE.video:
-        icon = Icon(
-          Icons.music_video,
-          color: Colors.blue,
-          size: 30.0,
-        );
-        break;
-      case MEDIA_TYPE.audio:
-        icon = Icon(
-          Icons.audiotrack,
-          color: Colors.green,
-          size: 30.0,
-        );
-        break;
-      case MEDIA_TYPE.picture:
-        icon = Icon(
-          Icons.photo,
-          color: Colors.yellow,
-          size: 30.0,
-        );
-        break;
-      default:
-        icon = Icon(
-          Icons.insert_drive_file,
-          color: Colors.grey,
-          size: 30.0,
-        );
-    }
-    return icon;
-  }
 
   Widget getDialogContent(String fileName) {
     MEDIA_TYPE fileType = guessFileType(fileName);
@@ -169,7 +114,9 @@ class _ClueDetailPageState extends State<ClueDetailPage> {
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
-                                    return MultiMediaDialog(content: content,);
+                                    return MultiMediaDialog(
+                                      content: content,
+                                    );
                                   });
                             }));
                   },
