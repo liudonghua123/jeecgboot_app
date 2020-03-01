@@ -154,9 +154,10 @@ class _ClueFragmentState extends State<ClueFragment> {
   }
 
   void _handleAdd(BuildContext context) async {
+    var data = Map();
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ClueFormPage(data: {})),
+      MaterialPageRoute(builder: (context) => ClueFormPage(data: data)),
     );
     await loadData();
     // Scaffold.of(context)

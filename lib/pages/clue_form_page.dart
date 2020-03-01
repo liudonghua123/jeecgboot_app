@@ -81,6 +81,13 @@ class _ClueFormPageState extends State<ClueFormPage> {
       var data = _fbKey.currentState.value;
       data['qbSwxszbfjList'] = clueFjList;
       var result;
+      // 处理时间日期字符串
+      if (data['cjsj'] != null) {
+        data['cjsj'] = DateFormat('yyyy-MM-dd').format(data['cjsj']);
+      }
+      if (data['scsj'] != null) {
+        data['scsj'] = DateFormat('yyyy-MM-dd').format(data['scsj']);
+      }
       if (widget.data['id'] != null) {
         data['id'] = widget.data['id'];
         result = await API.instance.editXs(context, data);
@@ -175,16 +182,20 @@ class _ClueFormPageState extends State<ClueFormPage> {
                         inputType: InputType.date,
                         format: DateFormat("yyyy-MM-dd"),
                         decoration: InputDecoration(labelText: "采集时间"),
-                        initialValue: DateTime.parse(widget.data["cjsj"]) ??
-                            DateTime.now(),
+                        initialValue: widget.data["cjsj"] != null &&
+                                widget.data["cjsj"] != ''
+                            ? DateTime.parse(widget.data["cjsj"])
+                            : null,
                       ),
                       FormBuilderDateTimePicker(
                         attribute: "scsj",
                         inputType: InputType.date,
                         format: DateFormat('yyyy-MM-dd'),
                         decoration: InputDecoration(labelText: "上传时间"),
-                        initialValue: DateTime.parse(widget.data["scsj"]) ??
-                            DateTime.now(),
+                        initialValue: widget.data["scsj"] != null &&
+                                widget.data["scsj"] != ''
+                            ? DateTime.parse(widget.data["scsj"])
+                            : null,
                       ),
                       FormBuilderTextField(
                         attribute: "cjrbh",
