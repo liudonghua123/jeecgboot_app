@@ -80,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: () async {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
-            bool isSuccess = await API.instance.login(username, password);
+            bool isSuccess = await API.instance.login(context, username, password);
             debugPrint('isSuccess: $isSuccess');
             if (isSuccess) {
               Navigator.of(context).pushReplacementNamed(HomePage.tag);

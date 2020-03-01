@@ -1,8 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:jeecgboot_app/utils.dart';
 import '../net/api.dart';
 import './clue_detail_page.dart';
+import './clue_form_page.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+// import 'package:fancy_dialog/fancy_dialog.dart';
+// import 'package:fancy_dialog/FancyTheme.dart';
+import 'package:giffy_dialog/giffy_dialog.dart';
 
 class ClueFragment extends StatefulWidget {
   ClueFragment({Key key}) : super(key: key);
@@ -18,17 +24,24 @@ class _ClueFragmentState extends State<ClueFragment> {
 
   @override
   void initState() {
+    super.initState();
+    if (clueList == null || clueList.length == 0) {
+      loadData();
+    }
+  }
+
+  void loadData() async {
     _loading = true;
-    // Timer(Duration(milliseconds: 3000), () {
-    // });
-    API.instance.getXsList(1, 1000).then((_clueList) {
+    try {
+      var _clueList = await API.instance.getXsList(context, 1, 1000);
       debugPrint('getXsList: $clueList');
       setState(() {
         _loading = false;
         clueList = _clueList;
       });
-    });
-    super.initState();
+    } catch (err) {
+      print(err);
+    }
   }
 
   @override
@@ -37,7 +50,7 @@ class _ClueFragmentState extends State<ClueFragment> {
       padding: EdgeInsets.all(10),
       child: _loading
           // ? LinearProgressIndicator()
-          ? new Column(
+          ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
@@ -55,27 +68,123 @@ class _ClueFragmentState extends State<ClueFragment> {
                 )
               ],
             )
-          : ListView.builder(
-              itemCount: clueList?.length ?? 0,
-              itemBuilder: (context, index) {
-                final item = clueList[index];
-                return Card(
-                  child: ListTile(
-                    title: Text(item['xsbt']),
-                    subtitle: Text(item['xsxq']),
-                    onTap: () {
-                      // navigate to the ClueDetailPage
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ClueDetailPage(clue: item),
+          : Stack(
+              children: <Widget>[
+                Container(
+                    child: ListView.builder(
+                  itemCount: clueList?.length ?? 0,
+                  itemBuilder: (context, index) {
+                    final item = clueList[index];
+                    return Slidable(
+                      actionPane: SlidableDrawerActionPane(),
+                      actionExtentRatio: 0.25,
+                      child: Card(
+                        child: ListTile(
+                          title: Text(item['xsbt']),
+                          subtitle: Text(item['xsxq']),
+                          onTap: () {
+                            _handleDetail(context, item);
+                          },
                         ),
-                      );
-                    },
-                  ),
-                );
-              },
+                      ),
+                      secondaryActions: <Widget>[
+                        IconSlideAction(
+                          caption: '编辑',
+                          color: Colors.blue,
+                          icon: Icons.edit,
+                          onTap: () => {_handleEdit(context, item)},
+                        ),
+                        IconSlideAction(
+                          caption: '删除',
+                          color: Colors.red,
+                          icon: Icons.delete,
+                          onTap: () => {_handleDelete(context, item)},
+                        ),
+                      ],
+                    );
+                  },
+                )),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Container(
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          FloatingActionButton(
+                              heroTag: 'refresh',
+                              child: Icon(Icons.refresh),
+                              onPressed: () {
+                                _handleRefresh(context);
+                              }),
+                          SizedBox(
+                            height: 16.0,
+                          ),
+                          FloatingActionButton(
+                              heroTag: 'add',
+                              child: Icon(Icons.add),
+                              onPressed: () {
+                                _handleAdd(context);
+                              })
+                        ],
+                      )),
+                )
+              ],
             ),
     );
+  }
+
+  void _handleRefresh(BuildContext context) async {
+    await loadData();
+  }
+
+  void _handleDetail(BuildContext context, item) async {
+    // got the detail info
+    List clueFjList = await API.instance.getXsFj(context, item['id']);
+    debugPrint('getXsFj: $clueFjList');
+    // navigate to the ClueDetailPage
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            ClueDetailPage(clue: item, clueFjList: clueFjList),
+      ),
+    );
+  }
+
+  void _handleAdd(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ClueFormPage(data: {})),
+    );
+    await loadData();
+    // Scaffold.of(context)
+    //   ..removeCurrentSnackBar()
+    //   ..showSnackBar(SnackBar(content: Text("$result")));
+  }
+
+  void _handleEdit(BuildContext context, item) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ClueFormPage(data: item)),
+    );
+    await loadData();
+    // Scaffold.of(context)
+    //   ..removeCurrentSnackBar()
+    //   ..showSnackBar(SnackBar(content: Text("$result")));
+  }
+
+  void _handleDelete(BuildContext context, item) async {
+    showDialog(
+        context: context,
+        builder: (_) => ConfirmDialog(context, title: '删除', content: '确定删除这一项？',
+                onOkButtonPressed: () async {
+              // 执行删除操作
+              await API.instance.deleteXs(context, item['id']);
+              // 重新加载列表数据
+              await loadData();
+              Navigator.of(context).pop();
+            }));
   }
 }

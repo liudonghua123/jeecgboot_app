@@ -4,16 +4,17 @@ import 'package:flutter/material.dart';
 import '../utils.dart';
 
 class AudioWidget extends StatefulWidget {
-  AudioWidget(
-      {Key key,
-      @required this.source,
-      this.width = 300,
-      this.height = 150,
-      this.loop = true})
-      : super(key: key);
+  AudioWidget({
+    Key key,
+    @required this.source,
+    this.width = 300,
+    this.height = 150,
+    this.loop = true,
+    this.play = true,
+  }) : super(key: key);
   final String source;
   final double width, height;
-  final bool loop;
+  final bool loop, play;
   @override
   State<StatefulWidget> createState() {
     return AudioWidgetState();
@@ -49,7 +50,11 @@ class AudioWidgetState extends State<AudioWidget> {
     // player.play(widget.source).then((AudioPlayer assetsAudioPlayer) {});
 
     //播放网络音频
-    play(widget.source);
+    if (widget.play) {
+      play(widget.source);
+    } else {
+      init(widget.source);
+    }
 
     //播放状态改变
     audioPlayer.onPlayerStateChanged.listen((AudioPlayerState playerState) {
@@ -175,6 +180,11 @@ class AudioWidgetState extends State<AudioWidget> {
         ],
       ),
     );
+  }
+
+  init(String url) async {
+    int result = await audioPlayer.setUrl(url);
+    print('播放状态：$result');
   }
 
   play(String url) async {

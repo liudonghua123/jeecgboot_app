@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import './main.dart';
+import 'package:giffy_dialog/giffy_dialog.dart';
+import 'widgets/audio_widget.dart';
+import 'widgets/video_widget.dart';
+import './net/api.dart';
 
 LoadingDialog({String loadingText = 'Loading...'}) => AlertDialog(
       shape: RoundedRectangleBorder(
@@ -35,6 +39,29 @@ MultiMediaDialog({String title = 'MultiMedia', @required Widget content}) =>
           borderRadius: BorderRadius.all(Radius.circular(5.0))),
       title: Text(title),
       content: content,
+    );
+
+ConfirmDialog(BuildContext context,
+        {String title = '操作',
+        @required String content,
+        Function onOkButtonPressed}) =>
+    FlareGiffyDialog(
+      flarePath: 'assets/space_demo.flr',
+      flareAnimation: 'loading',
+      title: Text(
+        title,
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+      ),
+      entryAnimation: EntryAnimation.DEFAULT,
+      description: Text(
+        content,
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w100),
+      ),
+      buttonOkText: Text('确定'),
+      buttonCancelText: Text('取消'),
+      onOkButtonPressed: onOkButtonPressed,
     );
 
 enum MEDIA_TYPE {
@@ -92,6 +119,38 @@ Widget getLeadingIcon(String fileName) {
       );
   }
   return icon;
+}
+
+Widget getDialogContent(String fileName) {
+  MEDIA_TYPE fileType = guessFileType(fileName);
+  Widget content;
+  String fileUrl = API.getStaticFilePath(fileName);
+  switch (fileType) {
+    case MEDIA_TYPE.video:
+      content = VideoWidget(source: fileUrl);
+      break;
+    case MEDIA_TYPE.audio:
+      content = AudioWidget(source: fileUrl);
+      break;
+    case MEDIA_TYPE.picture:
+      content = Container(
+          width: 300,
+          height: 300,
+          child: Image.network(
+            fileUrl,
+            fit: BoxFit.cover,
+          ));
+      break;
+    default:
+      content = Container(
+        width: 300,
+        child: FlatButton(
+          child: Text(fileName),
+          onPressed: () {},
+        ),
+      );
+  }
+  return content;
 }
 
 class TimeUtils {

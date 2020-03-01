@@ -7,17 +7,17 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 
 class API {
-  static String schema = 'http';
-  static String host = '192.168.1.96';
-  static int port = 3000;
-  static String baseUrl = '$schema://$host:$port/jeecg-boot';
-  static String token;
-  static BaseOptions options = BaseOptions(
-      baseUrl: baseUrl,
+  static String _schema = 'http';
+  static String _host = '192.168.1.96';
+  static int _port = 3000;
+  static String _baseUrl = '$_schema://$_host:$_port/jeecg-boot';
+  static String _token;
+  static BaseOptions _options = BaseOptions(
+      baseUrl: _baseUrl,
       contentType: Headers.jsonContentType,
       responseType: ResponseType.json,
-      headers: {"X-Access-Token": token});
-  static Dio dio = Dio(options);
+      headers: {"X-Access-Token": _token});
+  static Dio dio = Dio(_options);
 
   /*
     Token invalid 
@@ -29,7 +29,7 @@ class API {
         "path": "/jeecg-boot/xs/qbSwxszb/queryQbSwxszbfjByMainId"
     }
   */
-  static InterceptorsWrapper tokenInterceptor = InterceptorsWrapper(
+  InterceptorsWrapper tokenInterceptor = InterceptorsWrapper(
     onRequest: (RequestOptions options) async {
       print("REQUEST[${options?.method}] => PATH: ${options?.path}");
       return options;
@@ -37,25 +37,28 @@ class API {
     onResponse: (Response response) async {
       print(
           "RESPONSE[${response?.statusCode}] => PATH: ${response?.request?.path}");
-      if (response?.statusCode == 500 &&
-          response?.data['message'] == "Token失效，请重新登录") {
-        // 清除token信息
-        SharedPreferences.getInstance().then((prefs) {
-          prefs.remove('token');
-          print("prefs.remove('token')");
-        });
-        // 跳转到LoginPage
-        Navigator.of(MyApp.globalContext).pushNamed(LoginPage.tag);
-        dio.reject('Token失效，请重新登录');
-      }
       return response;
     },
     onError: (DioError err) async {
+      if (err?.response?.statusCode == 500 &&
+          err?.response?.data['message'] == "Token失效，请重新登录") {
+        // 清除token信息
+        var prefs = await SharedPreferences.getInstance();
+        prefs.remove('token');
+        print("prefs.remove('token')");
+        dio.reject('Token失效，请重新登录');
+      }
       print(
           "ERROR[${err?.response?.statusCode}] => PATH: ${err?.request?.path}");
       return err;
     },
   );
+
+  handleError(context, err) {
+    print('handleError $err');
+    // 跳转到LoginPage
+    // Navigator.of(context).pushNamed(LoginPage.tag);
+  }
 
   // https://stackoverflow.com/questions/12649573/how-do-you-build-a-singleton-in-dart
   // _internal vs _privateConstructor
@@ -66,20 +69,20 @@ class API {
       _instance = API._internal();
       // initial interceptor
       print("initial interceptor");
-      dio.interceptors.add(tokenInterceptor);
+      dio.interceptors.add(_instance.tokenInterceptor);
     }
-    checkAndSetToken();
+    _instance.checkAndSetToken();
     return _instance;
   }
 
-  static checkAndSetToken() async {
-    if (options.headers['X-Access-Token'] == null) {
+  checkAndSetToken() async {
+    if (_options.headers['X-Access-Token'] == null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String tokenPref = prefs.getString('token');
       if (tokenPref != null) {
         print("set token: $tokenPref");
-        token = tokenPref;
-        options.headers['X-Access-Token'] = token;
+        _token = tokenPref;
+        _options.headers['X-Access-Token'] = _token;
       }
     }
   }
@@ -159,23 +162,23 @@ class API {
         "timestamp": 1582725996351
     }  
    */
-  Future<bool> login(username, password) async {
+  Future<bool> login(context, username, password) async {
     try {
       Response response = await dio.post('/sys/simpleLogin',
           data: {'username': username, 'password': password});
       print(response);
-      if (response.data['success'] && response.data['result'] != null) {
-        token = response.data['result']['token'];
-        options.headers['X-Access-Token'] = token;
-        SharedPreferences.getInstance().then((prefs) {
-          prefs.setString('token', token);
-          print("prefs.setString('token', $token)");
-        });
+      if (response?.data['success'] && response?.data['result'] != null) {
+        _token = response?.data['result']['token'];
+        _options.headers['X-Access-Token'] = _token;
+        var prefs = await SharedPreferences.getInstance();
+        prefs.setString('token', _token);
+        print("prefs.setString('token', $_token)");
         return true;
       }
       return false;
     } catch (e) {
-      print(e);
+      handleError(context, e);
+      throw e;
     }
   }
 
@@ -224,7 +227,7 @@ class API {
         "timestamp": 1582726163688
     }
    */
-  Future<List> getXsList(pageNo, pageSize,
+  Future<List> getXsList(context, pageNo, pageSize,
       {String column = 'createTime', String order = 'desc'}) async {
     try {
       await checkAndSetToken();
@@ -235,14 +238,16 @@ class API {
           'pageSize': pageSize,
         },
       );
-      if (response.data['success'] && response.data['result'] != null) {
-        return response.data['result']['records'];
+      if (response?.data['success'] && response?.data['result'] != null) {
+        return response?.data['result']['records'];
       }
       return null;
     } catch (e) {
-      print(e);
+      handleError(context, e);
+      throw e;
     }
   }
+
   /*
     The request use query string parameter
     id: xxx
@@ -300,19 +305,20 @@ class API {
         "timestamp": 1582810644035
     }
     */
-  Future<List> getXsFj(id) async {
+  Future<List> getXsFj(context, id) async {
     try {
       await checkAndSetToken();
       Response response = await dio.get(
         '/xs/qbSwxszb/queryQbSwxszbfjByMainId',
         queryParameters: {'id': id},
       );
-      if (response.data['success'] && response.data['result'] != null) {
-        return response.data['result'];
+      if (response?.data['success'] && response?.data['result'] != null) {
+        return response?.data['result'];
       }
       return null;
     } catch (e) {
-      print(e);
+      handleError(context, e);
+      throw e;
     }
   }
 
@@ -337,19 +343,20 @@ class API {
         "timestamp": 1582770122798
     }  
    */
-  Future<List> addXs(Map data) async {
+  Future<List> addXs(context, Map data) async {
     try {
       await checkAndSetToken();
       Response response = await dio.post(
         '/xs/qbSwxszb/add',
         data: data,
       );
-      if (response.data['success'] && response.data['result'] != null) {
-        return response.data['result'];
+      if (response?.data['success'] && response?.data['result'] != null) {
+        return response?.data['result'];
       }
       return null;
     } catch (e) {
-      print(e);
+      handleError(context, e);
+      throw e;
     }
   }
 
@@ -396,19 +403,20 @@ class API {
         "timestamp": 1582770674984
     }
   */
-  Future<List> editXs(Map data) async {
+  Future<List> editXs(context, Map data) async {
     try {
       await checkAndSetToken();
       Response response = await dio.put(
         '/xs/qbSwxszb/edit',
         data: data,
       );
-      if (response.data['success'] && response.data['result'] != null) {
-        return response.data['result'];
+      if (response?.data['success'] && response?.data['result'] != null) {
+        return response?.data['result'];
       }
       return null;
     } catch (e) {
-      print(e);
+      handleError(context, e);
+      throw e;
     }
   }
 
@@ -424,7 +432,7 @@ class API {
         "timestamp": 1582770846220
     }
    */
-  Future<List> deleteXs(String id) async {
+  Future<List> deleteXs(context, String id) async {
     try {
       await checkAndSetToken();
       Response response = await dio.delete(
@@ -433,12 +441,13 @@ class API {
           'id': id,
         },
       );
-      if (response.data['success'] && response.data['result'] != null) {
-        return response.data['result'];
+      if (response?.data['success'] && response?.data['result'] != null) {
+        return response?.data['result'];
       }
       return null;
     } catch (e) {
-      print(e);
+      handleError(context, e);
+      throw e;
     }
   }
 
@@ -457,22 +466,23 @@ class API {
         "timestamp": 1582770215893
     }
   */
-  Future<List> upload(filePath) async {
+  Future<String> upload(context, filePath) async {
     try {
       await checkAndSetToken();
       Response response = await dio.post('/sys/common/upload',
           data: FormData.fromMap(
               {'isup': 1, "file": await MultipartFile.fromFile(filePath)}));
-      if (response.data['success'] && response.data['message'] != null) {
-        return response.data['message'];
+      if (response?.data['success'] && response?.data['message'] != null) {
+        return response?.data['message'];
       }
       return null;
     } catch (e) {
-      print(e);
+      handleError(context, e);
+      throw e;
     }
   }
 
   static String getStaticFilePath(fileName) {
-    return '$baseUrl/sys/common/static/$fileName';
+    return '$_baseUrl/sys/common/static/$fileName';
   }
 }

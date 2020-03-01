@@ -4,17 +4,18 @@ import 'package:video_player/video_player.dart';
 import '../utils.dart';
 
 class VideoWidget extends StatefulWidget {
-  VideoWidget(
-      {Key key,
-      @required this.source,
-      this.width = 300,
-      this.height = 300,
-      this.loop = true,
-      this.title = ''})
-      : super(key: key);
+  VideoWidget({
+    Key key,
+    @required this.source,
+    this.width = 300,
+    this.height = 300,
+    this.loop = true,
+    this.title = '',
+    this.play = true,
+  }) : super(key: key);
   final String source, title;
   final double width, height;
-  final bool loop;
+  final bool loop, play;
   @override
   State<StatefulWidget> createState() {
     return VideoWidgetState();
@@ -55,7 +56,9 @@ class VideoWidgetState extends State<VideoWidget> {
     });
     _controller.initialize().then((_) {
       setState(() {
-        _controller.play();
+        if (widget.play) {
+          _controller.play();
+        }
         _controller.setVolume(1);
       });
     });

@@ -7,7 +7,6 @@ import './pages/home_page.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  static BuildContext globalContext;
   final routes = <String, WidgetBuilder>{
     WelcomePage.tag: (context) => WelcomePage(),
     LoginPage.tag: (context) => LoginPage(),
@@ -16,7 +15,6 @@ class MyApp extends StatelessWidget {
   };
   @override
   Widget build(BuildContext context) {
-    globalContext = context;
     return MaterialApp(
       title: 'ROTS APP',
       routes: routes,
