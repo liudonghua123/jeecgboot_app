@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:jeecgboot_app/utils.dart';
+import '../utils.dart';
 import '../net/api.dart';
 import './clue_detail_page.dart';
 import './clue_form_page.dart';

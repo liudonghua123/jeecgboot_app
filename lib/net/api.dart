@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:jeecgboot_app/pages/login_page.dart';
+import '../pages/login_page.dart';
+import '../pages/welcome_page.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
@@ -54,10 +55,17 @@ class API {
     },
   );
 
-  handleError(context, err) {
+  handleError(context, err) async {
     print('handleError $err');
-    // 跳转到LoginPage
-    // Navigator.of(context).pushNamed(LoginPage.tag);
+    // Token失效，重新登录
+    if (err?.response?.data['message'] == "Token失效，请重新登录") {
+      var prefs = await SharedPreferences.getInstance();
+      prefs.remove('token');
+      print("prefs.remove('token')");
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => LoginPage()),
+          ModalRoute.withName(WelcomePage.tag));
+    }
   }
 
   // https://stackoverflow.com/questions/12649573/how-do-you-build-a-singleton-in-dart
