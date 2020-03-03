@@ -127,7 +127,8 @@ Widget getDialogContent(BuildContext context, String fileName) {
   MEDIA_TYPE fileType = guessFileType(fileName);
   Widget content;
   String fileUrl = API.getStaticFilePath(fileName);
-  Widget downloadButton = FlatButton(
+  Widget downloadButton = RaisedButton(
+    color: Colors.blueAccent,
     child: Text('下载 $fileName'),
     onPressed: () async {
       // Downloader.download(fileUrl, fileName, '.$fileType');
