@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import './main.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 import 'widgets/audio_widget.dart';
 import 'widgets/video_widget.dart';
 import './net/api.dart';
+import 'package:downloader/downloader.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:path_provider/path_provider.dart';
 
 LoadingDialog({String loadingText = 'Loading...'}) => AlertDialog(
       shape: RoundedRectangleBorder(
@@ -121,36 +123,92 @@ Widget getLeadingIcon(String fileName) {
   return icon;
 }
 
-Widget getDialogContent(String fileName) {
+Widget getDialogContent(BuildContext context, String fileName) {
   MEDIA_TYPE fileType = guessFileType(fileName);
   Widget content;
   String fileUrl = API.getStaticFilePath(fileName);
+  Widget downloadButton = FlatButton(
+    child: Text('下载 $fileName'),
+    onPressed: () async {
+      // Downloader.download(fileUrl, fileName, '.$fileType');
+      var _saveDir = await _findLocalPath(context);
+      final taskId = await FlutterDownloader.enqueue(
+        url: fileUrl,
+        savedDir: _saveDir,
+        showNotification:
+            true, // show download progress in status bar (for Android)
+        openFileFromNotification:
+            true, // click on notification to open downloaded file (for Android)
+      );
+      print('_saveDir: $_saveDir, taskId: $taskId');
+      final tasks = await FlutterDownloader.loadTasks();
+      print('tasks: $tasks');
+      Navigator.of(context).pop();
+    },
+  );
   switch (fileType) {
     case MEDIA_TYPE.video:
-      content = VideoWidget(source: fileUrl);
+      content = Container(
+          width: 300,
+          height: 350,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              VideoWidget(source: fileUrl),
+              Row(
+                children: <Widget>[Expanded(child: downloadButton)],
+              )
+            ],
+          ));
       break;
     case MEDIA_TYPE.audio:
-      content = AudioWidget(source: fileUrl);
+      content = Container(
+          width: 300,
+          height: 200,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              AudioWidget(source: fileUrl),
+              Row(
+                children: <Widget>[Expanded(child: downloadButton)],
+              )
+            ],
+          ));
       break;
     case MEDIA_TYPE.picture:
       content = Container(
           width: 300,
-          height: 300,
-          child: Image.network(
-            fileUrl,
-            fit: BoxFit.cover,
+          height: 200,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image.network(
+                fileUrl,
+                fit: BoxFit.cover,
+              ),
+              Row(
+                children: <Widget>[Expanded(child: downloadButton)],
+              )
+            ],
           ));
       break;
     default:
       content = Container(
         width: 300,
-        child: FlatButton(
-          child: Text(fileName),
-          onPressed: () {},
-        ),
+        height: 100,
+        padding: EdgeInsets.all(10),
+        child: Column(children: <Widget>[Expanded(child: downloadButton)]),
       );
   }
   return content;
+}
+
+Future<String> _findLocalPath(BuildContext context) async {
+  final directory = Theme.of(context).platform == TargetPlatform.android
+      ? (await getExternalStorageDirectories(
+          type: StorageDirectory.downloads))[0]
+      : await getApplicationDocumentsDirectory();
+  return directory.path;
 }
 
 class TimeUtils {

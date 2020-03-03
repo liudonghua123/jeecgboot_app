@@ -252,7 +252,7 @@ class _ClueFormPageState extends State<ClueFormPage> {
                             },
                           ),
                           onTap: () {
-                            Widget content = getDialogContent(item['wjlj']);
+                            Widget content = getDialogContent(context, item['wjlj']);
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) {

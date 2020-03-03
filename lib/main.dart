@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import './pages/welcome_page.dart';
 import './pages/login_page.dart';
 import './pages/home_page.dart';
-// import './pages/clue_detail_page.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FlutterDownloader.initialize();
+
+  runApp(new MyApp());
+}
 
 class MyApp extends StatelessWidget {
   final routes = <String, WidgetBuilder>{

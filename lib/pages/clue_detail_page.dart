@@ -27,7 +27,7 @@ class ClueDetailPage extends StatelessWidget {
                       title: Text(item['fjmc'] ?? ''),
                       subtitle: Text(item['scsbbm']?? '') ,
                       onTap: () {
-                        Widget content = getDialogContent(item['wjlj']);
+                        Widget content = getDialogContent(context, item['wjlj']);
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
