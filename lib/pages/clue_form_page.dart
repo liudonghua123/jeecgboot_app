@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
 import 'package:file_picker/file_picker.dart';
+import '../model/clue.dart';
+import '../model/clue_attachment.dart';
 import '../net/api.dart';
 import '../utils.dart';
-import './clue_attachement_page.dart';
+import './clue_attachment_page.dart';
 
 class ClueFormPage extends StatefulWidget {
   ClueFormPage({Key key, this.data}) : super(key: key);
-  Map data = Map();
+  Clue data;
 
   @override
   _ClueFormPageState createState() => _ClueFormPageState();
@@ -29,7 +31,7 @@ List<CustomPopupMenu> choices = <CustomPopupMenu>[
 
 class _ClueFormPageState extends State<ClueFormPage> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
-  List clueFjList = [];
+  List<ClueAttachment> clueFjList = [];
 
   @override
   void initState() {
@@ -38,8 +40,8 @@ class _ClueFormPageState extends State<ClueFormPage> {
   }
 
   void _init() async {
-    if (widget.data['id'] != null) {
-      var result = await API.instance.getXsFj(context, widget.data['id']);
+    if (widget.data.id != null) {
+      List<ClueAttachment> result = await API.instance.getXsFj(context, widget.data.id);
       setState(() {
         clueFjList = result;
       });
@@ -78,7 +80,7 @@ class _ClueFormPageState extends State<ClueFormPage> {
 
   _saveClue(BuildContext context) async {
     if (_fbKey.currentState.saveAndValidate()) {
-      var data = _fbKey.currentState.value;
+      Map data = _fbKey.currentState.value;
       data['qbSwxszbfjList'] = clueFjList;
       var result;
       // 处理时间日期字符串
@@ -88,8 +90,8 @@ class _ClueFormPageState extends State<ClueFormPage> {
       if (data['scsj'] != null) {
         data['scsj'] = DateFormat('yyyy-MM-dd').format(data['scsj']);
       }
-      if (widget.data['id'] != null) {
-        data['id'] = widget.data['id'];
+      if (widget.data.id != null) {
+        data['id'] = widget.data.id;
         result = await API.instance.editXs(context, data);
       } else {
         result = await API.instance.addXs(context, data);
@@ -100,9 +102,10 @@ class _ClueFormPageState extends State<ClueFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final item = widget.data;
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.data['id'] != null ? '编辑' : '添加'),
+        title: Text(item.id != null ? '编辑' : '添加'),
         actions: <Widget>[
           PopupMenuButton<CustomPopupMenu>(
             tooltip: '请选择添加文件类型',
@@ -137,7 +140,7 @@ class _ClueFormPageState extends State<ClueFormPage> {
                   FormBuilderTextField(
                     attribute: "xsbt",
                     decoration: InputDecoration(labelText: "线索标题"),
-                    initialValue: widget.data["xsbt"] ?? '',
+                    initialValue: item.xsbt ?? '',
                     validators: [
                       FormBuilderValidators.required(),
                       FormBuilderValidators.min(5),
@@ -146,7 +149,7 @@ class _ClueFormPageState extends State<ClueFormPage> {
                   FormBuilderTextField(
                     attribute: "xsxq",
                     decoration: InputDecoration(labelText: "线索详情"),
-                    initialValue: widget.data["xsxq"] ?? '',
+                    initialValue: item.xsxq ?? '',
                     validators: [
                       FormBuilderValidators.required(),
                       FormBuilderValidators.min(5),
@@ -155,7 +158,7 @@ class _ClueFormPageState extends State<ClueFormPage> {
                   FormBuilderDropdown(
                     attribute: "xslx",
                     decoration: InputDecoration(labelText: "线索类型"),
-                    initialValue: widget.data["xslx"] ?? '一般',
+                    initialValue: item.xslx ?? '一般',
                     hint: Text('选择线索类型'),
                     validators: [FormBuilderValidators.required()],
                     items: ['非常重要', '重要', '一般']
@@ -170,56 +173,50 @@ class _ClueFormPageState extends State<ClueFormPage> {
                         attribute: "xsddbh",
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(labelText: "地址编号"),
-                        initialValue: widget.data["xsddbh"] ?? '',
+                        initialValue: item.xsddbh ?? '',
                       ),
                       FormBuilderTextField(
                         attribute: "xsddmc",
                         decoration: InputDecoration(labelText: "地址名称"),
-                        initialValue: widget.data["xsddmc"] ?? '',
+                        initialValue: item.xsddmc ?? '',
                       ),
                       FormBuilderDateTimePicker(
                         attribute: "cjsj",
                         inputType: InputType.date,
                         format: DateFormat("yyyy-MM-dd"),
                         decoration: InputDecoration(labelText: "采集时间"),
-                        initialValue: widget.data["cjsj"] != null &&
-                                widget.data["cjsj"] != ''
-                            ? DateTime.parse(widget.data["cjsj"])
-                            : null,
+                        initialValue: item.cjsj,
                       ),
                       FormBuilderDateTimePicker(
                         attribute: "scsj",
                         inputType: InputType.date,
                         format: DateFormat('yyyy-MM-dd'),
                         decoration: InputDecoration(labelText: "上传时间"),
-                        initialValue: widget.data["scsj"] != null &&
-                                widget.data["scsj"] != ''
-                            ? DateTime.parse(widget.data["scsj"])
-                            : null,
+                        initialValue: item.scsj,
                       ),
                       FormBuilderTextField(
                         attribute: "cjrbh",
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(labelText: "采集人编号"),
-                        initialValue: widget.data["cjrbh"] ?? '',
+                        initialValue: item.cjrbh ?? '',
                       ),
                       FormBuilderTextField(
                         attribute: "cjbmbh",
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(labelText: "采集部门编号"),
-                        initialValue: widget.data["cjbmbh"] ?? '',
+                        initialValue: item.cjbmbh ?? '',
                       ),
                       FormBuilderTextField(
                         attribute: "swsjbh",
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(labelText: "涉稳事件编号"),
-                        initialValue: widget.data["swsjbh"] ?? '',
+                        initialValue: item.swsjbh ?? '',
                       ),
                       FormBuilderTextField(
                         attribute: "zdasjqbxxbh",
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(labelText: "信息编号"),
-                        initialValue: widget.data["zdasjqbxxbh"] ?? '',
+                        initialValue: item.zdasjqbxxbh ?? '',
                       ),
                     ],
                   ),
@@ -240,9 +237,9 @@ class _ClueFormPageState extends State<ClueFormPage> {
                     itemBuilder: (context, index) {
                       final item = clueFjList[index];
                       return ListTile(
-                          leading: getLeadingIcon(item['wjlj']),
-                          title: Text(item['fjmc'] ?? ''),
-                          subtitle: Text(item['scsbbm'] ?? ''),
+                          leading: getLeadingIcon(item.wjlj),
+                          title: Text(item.fjmc ?? ''),
+                          subtitle: Text(item.scsbbm ?? ''),
                           trailing: IconButton(
                             icon: Icon(Icons.delete),
                             onPressed: () async {
@@ -252,7 +249,7 @@ class _ClueFormPageState extends State<ClueFormPage> {
                             },
                           ),
                           onTap: () {
-                            Widget content = getDialogContent(context, item['wjlj']);
+                            Widget content = getDialogContent(context, item.wjlj);
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) {

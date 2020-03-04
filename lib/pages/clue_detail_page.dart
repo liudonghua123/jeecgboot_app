@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import '../model/clue.dart';
+import '../model/clue_attachment.dart';
 import '../utils.dart';
 
 class ClueDetailPage extends StatelessWidget {
   ClueDetailPage({Key key, @required this.clue, @required this.clueFjList})
       : super(key: key);
   static String tag = 'clue-detail-page';
-  final Map clue;
-  final List clueFjList;
+  final Clue clue;
+  final List<ClueAttachment> clueFjList;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(clue['xsbt']),
+        title: Text(clue.xsbt),
         actions: <Widget>[],
       ),
       body: Container(
@@ -23,11 +25,11 @@ class ClueDetailPage extends StatelessWidget {
               final item = clueFjList[index];
               return Card(
                   child: ListTile(
-                      leading: getLeadingIcon(item['wjlj']),
-                      title: Text(item['fjmc'] ?? ''),
-                      subtitle: Text(item['scsbbm']?? '') ,
+                      leading: getLeadingIcon(item.wjlj),
+                      title: Text(item.fjmc ?? ''),
+                      subtitle: Text(item.scsbbm?? '') ,
                       onTap: () {
-                        Widget content = getDialogContent(context, item['wjlj']);
+                        Widget content = getDialogContent(context, item.wjlj);
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {

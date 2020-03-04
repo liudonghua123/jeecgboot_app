@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:jeecgboot_app/model/clue_attachment.dart';
+import '../model/general_response.dart';
 import '../utils.dart';
 import '../net/api.dart';
 import '../widgets/audio_widget.dart';
@@ -77,8 +79,10 @@ class _ClueAttachmentPageState extends State<ClueAttachmentPage> {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       try {
-        String result = await API.instance.upload(context, filePathSelected);
-        Navigator.of(context).pop({'wjlj': result, 'fjmc': fjmc});
+        GeneralResponse result =
+            await API.instance.upload(context, filePathSelected);
+        Navigator.of(context).pop(
+            ClueAttachment.fromJson({'wjlj': result.message, 'fjmc': fjmc}));
       } catch (e) {}
     }
   }

@@ -6,6 +6,9 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
+import '../model/clue.dart';
+import '../model/clue_attachment.dart';
+import '../model/general_response.dart';
 
 class API {
   static String _schema = 'http';
@@ -175,7 +178,7 @@ class API {
       Response response = await dio.post('/sys/simpleLogin',
           data: {'username': username, 'password': password});
       print(response);
-      if (response?.data['success'] && response?.data['result'] != null) {
+      if (response?.data['success']) {
         _token = response?.data['result']['token'];
         _options.headers['X-Access-Token'] = _token;
         var prefs = await SharedPreferences.getInstance();
@@ -235,7 +238,7 @@ class API {
         "timestamp": 1582726163688
     }
    */
-  Future<List> getXsList(context, pageNo, pageSize,
+  Future<List<Clue>> getXsList(context, pageNo, pageSize,
       {String column = 'createTime', String order = 'desc'}) async {
     try {
       await checkAndSetToken();
@@ -246,8 +249,10 @@ class API {
           'pageSize': pageSize,
         },
       );
-      if (response?.data['success'] && response?.data['result'] != null) {
-        return response?.data['result']['records'];
+      if (response?.data['success']) {
+        List<dynamic> records =
+            response?.data['result']['records'];
+        return records.map((item) => Clue.fromJson(item)).toList();
       }
       return null;
     } catch (e) {
@@ -313,15 +318,16 @@ class API {
         "timestamp": 1582810644035
     }
     */
-  Future<List> getXsFj(context, id) async {
+  Future<List<ClueAttachment>> getXsFj(context, id) async {
     try {
       await checkAndSetToken();
       Response response = await dio.get(
         '/xs/qbSwxszb/queryQbSwxszbfjByMainId',
         queryParameters: {'id': id},
       );
-      if (response?.data['success'] && response?.data['result'] != null) {
-        return response?.data['result'];
+      if (response?.data['success']) {
+        List<dynamic> result = response?.data['result'];
+        return result.map((item) => ClueAttachment.fromJson(item)).toList();
       }
       return null;
     } catch (e) {
@@ -351,15 +357,15 @@ class API {
         "timestamp": 1582770122798
     }  
    */
-  Future<List> addXs(context, Map data) async {
+  Future<GeneralResponse> addXs(context, Map data) async {
     try {
       await checkAndSetToken();
       Response response = await dio.post(
         '/xs/qbSwxszb/add',
         data: data,
       );
-      if (response?.data['success'] && response?.data['result'] != null) {
-        return response?.data['result'];
+      if (response?.data['success']) {
+        return GeneralResponse.fromJson(response?.data);
       }
       return null;
     } catch (e) {
@@ -411,15 +417,15 @@ class API {
         "timestamp": 1582770674984
     }
   */
-  Future<List> editXs(context, Map data) async {
+  Future<GeneralResponse> editXs(context, Map data) async {
     try {
       await checkAndSetToken();
       Response response = await dio.put(
         '/xs/qbSwxszb/edit',
         data: data,
       );
-      if (response?.data['success'] && response?.data['result'] != null) {
-        return response?.data['result'];
+      if (response?.data['success']) {
+        return GeneralResponse.fromJson(response?.data);
       }
       return null;
     } catch (e) {
@@ -440,7 +446,7 @@ class API {
         "timestamp": 1582770846220
     }
    */
-  Future<List> deleteXs(context, String id) async {
+  Future<GeneralResponse> deleteXs(context, String id) async {
     try {
       await checkAndSetToken();
       Response response = await dio.delete(
@@ -449,8 +455,8 @@ class API {
           'id': id,
         },
       );
-      if (response?.data['success'] && response?.data['result'] != null) {
-        return response?.data['result'];
+      if (response?.data['success']) {
+        return GeneralResponse.fromJson(response?.data);
       }
       return null;
     } catch (e) {
@@ -474,14 +480,14 @@ class API {
         "timestamp": 1582770215893
     }
   */
-  Future<String> upload(context, filePath) async {
+  Future<GeneralResponse> upload(context, filePath) async {
     try {
       await checkAndSetToken();
       Response response = await dio.post('/sys/common/upload',
           data: FormData.fromMap(
               {'isup': 1, "file": await MultipartFile.fromFile(filePath)}));
       if (response?.data['success'] && response?.data['message'] != null) {
-        return response?.data['message'];
+        return GeneralResponse.fromJson(response?.data);
       }
       return null;
     } catch (e) {

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import '../model/clue.dart';
 import '../utils.dart';
 import '../net/api.dart';
 import './clue_detail_page.dart';
@@ -19,7 +20,7 @@ class ClueFragment extends StatefulWidget {
 }
 
 class _ClueFragmentState extends State<ClueFragment> {
-  List clueList = [];
+  List<Clue> clueList = [];
   bool _loading;
 
   @override
@@ -33,7 +34,7 @@ class _ClueFragmentState extends State<ClueFragment> {
   void loadData() async {
     _loading = true;
     try {
-      var _clueList = await API.instance.getXsList(context, 1, 1000);
+      List<Clue> _clueList = await API.instance.getXsList(context, 1, 1000);
       debugPrint('getXsList: $clueList');
       setState(() {
         _loading = false;
@@ -80,8 +81,8 @@ class _ClueFragmentState extends State<ClueFragment> {
                       actionExtentRatio: 0.25,
                       child: Card(
                         child: ListTile(
-                          title: Text(item['xsbt']),
-                          subtitle: Text(item['xsxq']),
+                          title: Text(item.xsbt),
+                          subtitle: Text(item.xsxq),
                           onTap: () {
                             _handleDetail(context, item);
                           },
@@ -139,9 +140,9 @@ class _ClueFragmentState extends State<ClueFragment> {
     await loadData();
   }
 
-  void _handleDetail(BuildContext context, item) async {
+  void _handleDetail(BuildContext context, Clue item) async {
     // got the detail info
-    List clueFjList = await API.instance.getXsFj(context, item['id']);
+    List clueFjList = await API.instance.getXsFj(context, item.id);
     debugPrint('getXsFj: $clueFjList');
     // navigate to the ClueDetailPage
     Navigator.push(
@@ -154,7 +155,7 @@ class _ClueFragmentState extends State<ClueFragment> {
   }
 
   void _handleAdd(BuildContext context) async {
-    var data = Map();
+    Clue data = Clue();
     final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ClueFormPage(data: data)),
@@ -165,7 +166,7 @@ class _ClueFragmentState extends State<ClueFragment> {
     //   ..showSnackBar(SnackBar(content: Text("$result")));
   }
 
-  void _handleEdit(BuildContext context, item) async {
+  void _handleEdit(BuildContext context, Clue item) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ClueFormPage(data: item)),
@@ -176,13 +177,13 @@ class _ClueFragmentState extends State<ClueFragment> {
     //   ..showSnackBar(SnackBar(content: Text("$result")));
   }
 
-  void _handleDelete(BuildContext context, item) async {
+  void _handleDelete(BuildContext context, Clue item) async {
     showDialog(
         context: context,
         builder: (_) => ConfirmDialog(context, title: '删除', content: '确定删除这一项？',
                 onOkButtonPressed: () async {
               // 执行删除操作
-              await API.instance.deleteXs(context, item['id']);
+              await API.instance.deleteXs(context, item.id);
               // 重新加载列表数据
               await loadData();
               Navigator.of(context).pop();

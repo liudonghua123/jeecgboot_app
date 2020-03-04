@@ -65,12 +65,19 @@ dependencies:
   # https://pub.dev/packages/flutter_downloader#-installing-tab-
   # https://github.com/fluttercommunity/flutter_downloader/blob/master/example/lib/main.dart
   flutter_downloader: ^1.4.1
+  # https://flutter.dev/docs/development/data-and-backend/json
+  # http://cncc.bingj.com/cache.aspx?q=flutter++json_serializable+dio&d=4974259462799420&mkt=en-US&setlang=en-US&w=uRnEa6UtpyHWCAxmlb8Q560l8sd-wBIG
+  # http://cncc.bingj.com/cache.aspx?q=flutter++json_serializable+dio&d=4684443654294601&mkt=en-US&setlang=en-US&w=3GZtAtj2mkVSPVfRz9fE4H2cTsJXhJfn
+  json_annotation: ^2.4.0
 
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+    
+  build_runner: ^1.0.0
+  json_serializable: ^3.0.0
 
 
 # For information on the generic Dart part of this file, see the
