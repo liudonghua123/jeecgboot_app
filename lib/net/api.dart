@@ -1,62 +1,18 @@
-import 'dart:io';
-import 'package:dio/dio.dart';
-import '../pages/login_page.dart';
-import '../pages/welcome_page.dart';
 import 'dart:async';
+import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
-import '../main.dart';
+import 'package:flutter_config/flutter_config.dart';
+import '../pages/login_page.dart';
+import '../pages/welcome_page.dart';
 import '../model/clue.dart';
 import '../model/clue_attachment.dart';
 import '../model/general_response.dart';
 
 class API {
-  static String _schema = 'http';
-  static String _host = '192.168.1.96';
-  static int _port = 3000;
-  static String _baseUrl = '$_schema://$_host:$_port/jeecg-boot';
-  static String _token;
-  static BaseOptions _options = BaseOptions(
-      baseUrl: _baseUrl,
-      contentType: Headers.jsonContentType,
-      responseType: ResponseType.json,
-      headers: {"X-Access-Token": _token});
-  static Dio dio = Dio(_options);
-
-  /*
-    Token invalid 
-    {
-        "timestamp": "2020-02-27 09:04:38",
-        "status": 500,
-        "error": "Internal Server Error",
-        "message": "Token失效，请重新登录",
-        "path": "/jeecg-boot/xs/qbSwxszb/queryQbSwxszbfjByMainId"
-    }
-  */
-  InterceptorsWrapper tokenInterceptor = InterceptorsWrapper(
-    onRequest: (RequestOptions options) async {
-      print("REQUEST[${options?.method}] => PATH: ${options?.path}");
-      return options;
-    },
-    onResponse: (Response response) async {
-      print(
-          "RESPONSE[${response?.statusCode}] => PATH: ${response?.request?.path}");
-      return response;
-    },
-    onError: (DioError err) async {
-      if (err?.response?.statusCode == 500 &&
-          err?.response?.data['message'] == "Token失效，请重新登录") {
-        // 清除token信息
-        var prefs = await SharedPreferences.getInstance();
-        prefs.remove('token');
-        print("prefs.remove('token')");
-        dio.reject('Token失效，请重新登录');
-      }
-      print(
-          "ERROR[${err?.response?.statusCode}] => PATH: ${err?.request?.path}");
-      return err;
-    },
-  );
+  static String _apiBaseUrl;
+  BaseOptions _options;
+  Dio dio;
 
   handleError(context, err) async {
     print('handleError $err');
@@ -78,9 +34,51 @@ class API {
   static API get instance {
     if (_instance == null) {
       _instance = API._internal();
+      API._apiBaseUrl = FlutterConfig.get('API_BASE_URL');
+      print('set _apiBaseUrl to ${API._apiBaseUrl}');
+      _instance._options = BaseOptions(
+          baseUrl: API._apiBaseUrl,
+          contentType: Headers.jsonContentType,
+          responseType: ResponseType.json,
+          headers: {"X-Access-Token": null});
+      _instance.dio = Dio(_instance._options);
+      /*
+        Token invalid 
+        {
+            "timestamp": "2020-02-27 09:04:38",
+            "status": 500,
+            "error": "Internal Server Error",
+            "message": "Token失效，请重新登录",
+            "path": "/jeecg-boot/xs/qbSwxszb/queryQbSwxszbfjByMainId"
+        }
+      */
+      InterceptorsWrapper tokenInterceptor = InterceptorsWrapper(
+        onRequest: (RequestOptions options) async {
+          print("REQUEST[${options?.method}] => PATH: ${options?.path}");
+          return options;
+        },
+        onResponse: (Response response) async {
+          print(
+              "RESPONSE[${response?.statusCode}] => PATH: ${response?.request?.path}");
+          return response;
+        },
+        onError: (DioError err) async {
+          if (err?.response?.statusCode == 500 &&
+              err?.response?.data['message'] == "Token失效，请重新登录") {
+            // 清除token信息
+            var prefs = await SharedPreferences.getInstance();
+            prefs.remove('token');
+            print("prefs.remove('token')");
+            _instance.dio.reject('Token失效，请重新登录');
+          }
+          print(
+              "ERROR[${err?.response?.statusCode}] => PATH: ${err?.request?.path}");
+          return err;
+        },
+      );
       // initial interceptor
       print("initial interceptor");
-      dio.interceptors.add(_instance.tokenInterceptor);
+      _instance.dio.interceptors.add(tokenInterceptor);
     }
     _instance.checkAndSetToken();
     return _instance;
@@ -92,8 +90,7 @@ class API {
       String tokenPref = prefs.getString('token');
       if (tokenPref != null) {
         print("set token: $tokenPref");
-        _token = tokenPref;
-        _options.headers['X-Access-Token'] = _token;
+        _options.headers['X-Access-Token'] = tokenPref;
       }
     }
   }
@@ -179,7 +176,7 @@ class API {
           data: {'username': username, 'password': password});
       print(response);
       if (response?.data['success']) {
-        _token = response?.data['result']['token'];
+        var _token = response?.data['result']['token'];
         _options.headers['X-Access-Token'] = _token;
         var prefs = await SharedPreferences.getInstance();
         prefs.setString('token', _token);
@@ -250,8 +247,7 @@ class API {
         },
       );
       if (response?.data['success']) {
-        List<dynamic> records =
-            response?.data['result']['records'];
+        List<dynamic> records = response?.data['result']['records'];
         return records.map((item) => Clue.fromJson(item)).toList();
       }
       return null;
@@ -497,6 +493,6 @@ class API {
   }
 
   static String getStaticFilePath(fileName) {
-    return '$_baseUrl/sys/common/static/$fileName';
+    return '$_apiBaseUrl/sys/common/static/$fileName';
   }
 }

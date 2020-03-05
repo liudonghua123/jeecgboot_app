@@ -265,6 +265,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.2.6"
+  flutter_config:
+    dependency: "direct main"
+    description:
+      name: flutter_config
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.5"
   flutter_downloader:
     dependency: "direct main"
     description:
@@ -678,7 +685,7 @@ packages:
       name: test_api
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.2.11"
+    version: "0.2.15"
   timing:
     dependency: transitive
     description:

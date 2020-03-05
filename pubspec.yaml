@@ -69,6 +69,8 @@ dependencies:
   # http://cncc.bingj.com/cache.aspx?q=flutter++json_serializable+dio&d=4974259462799420&mkt=en-US&setlang=en-US&w=uRnEa6UtpyHWCAxmlb8Q560l8sd-wBIG
   # http://cncc.bingj.com/cache.aspx?q=flutter++json_serializable+dio&d=4684443654294601&mkt=en-US&setlang=en-US&w=3GZtAtj2mkVSPVfRz9fE4H2cTsJXhJfn
   json_annotation: ^2.4.0
+  # https://pub.dev/packages/flutter_config
+  flutter_config: ^1.0.5
 
 
 
