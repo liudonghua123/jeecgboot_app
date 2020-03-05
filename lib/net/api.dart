@@ -2,12 +2,12 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_config/flutter_config.dart';
 import '../pages/login_page.dart';
 import '../pages/welcome_page.dart';
 import '../model/clue.dart';
 import '../model/clue_attachment.dart';
 import '../model/general_response.dart';
+import '../main.dart';
 
 class API {
   static String _apiBaseUrl;
@@ -34,7 +34,7 @@ class API {
   static API get instance {
     if (_instance == null) {
       _instance = API._internal();
-      API._apiBaseUrl = FlutterConfig.get('API_BASE_URL');
+      API._apiBaseUrl = config.apiBaseUrl;
       print('set _apiBaseUrl to ${API._apiBaseUrl}');
       _instance._options = BaseOptions(
           baseUrl: API._apiBaseUrl,

@@ -70,7 +70,9 @@ dependencies:
   # http://cncc.bingj.com/cache.aspx?q=flutter++json_serializable+dio&d=4684443654294601&mkt=en-US&setlang=en-US&w=3GZtAtj2mkVSPVfRz9fE4H2cTsJXhJfn
   json_annotation: ^2.4.0
   # https://pub.dev/packages/flutter_config
-  flutter_config: ^1.0.5
+  # flutter_config: ^1.0.5
+  # https://pub.dev/packages/yaml_config
+  yaml_config: ^0.1.2
 
 
 
@@ -101,6 +103,7 @@ flutter:
     - assets/loveyou-cut.mp4
     - assets/men_wearing_jacket.gif
     - assets/space_demo.flr
+    - config.yaml
   # fonts:
   #     - family: Nunito
   #       fonts:
