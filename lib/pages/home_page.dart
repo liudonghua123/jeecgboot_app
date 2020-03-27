@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
+import '../localization.dart';
 import 'clue_fragment.dart';
-import 'about_fragment.dart';
+import 'profile_page.dart';
 
 class HomePage extends StatefulWidget {
   static String tag = 'home-page';
@@ -22,7 +23,7 @@ class _HomePageState extends State<HomePage> {
           widget = ClueFragment();
           break;
         default:
-          widget = AboutFragment();
+          widget = ProfilePage();
       }
       return widget;
     }
@@ -41,7 +42,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: Text(AppLocalizations.of(context).title),
       ),
       bottomNavigationBar: FancyBottomNavigation(
         tabs: [

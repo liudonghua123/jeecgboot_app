@@ -286,6 +286,18 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.7.0"
+  flutter_localizations:
+    dependency: "direct main"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
+  flutter_redux:
+    dependency: "direct main"
+    description:
+      name: flutter_redux
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.6.0"
   flutter_secure_storage:
     dependency: "direct main"
     description:
@@ -388,12 +400,21 @@ packages:
     source: hosted
     version: "2.1.4"
   intl:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: intl
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.16.1"
+  intl_translation:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: glob-path-parse
+      resolved-ref: "1fa7dc477d5812efbf7c45032361ee453c12241f"
+      url: "git://github.com/liudonghua123/intl_translation.git"
+    source: git
+    version: "0.17.9"
   io:
     dependency: transitive
     description:
@@ -555,6 +576,27 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.5"
+  redux:
+    dependency: "direct main"
+    description:
+      name: redux
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "4.0.0"
+  redux_logging:
+    dependency: "direct main"
+    description:
+      name: redux_logging
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.4.0"
+  redux_thunk:
+    dependency: "direct main"
+    description:
+      name: redux_thunk
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.0"
   shared_preferences:
     dependency: "direct main"
     description:

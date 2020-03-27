@@ -19,9 +19,12 @@ class ClueFragment extends StatefulWidget {
   _ClueFragmentState createState() => _ClueFragmentState();
 }
 
-class _ClueFragmentState extends State<ClueFragment> {
+class _ClueFragmentState extends State<ClueFragment> with AutomaticKeepAliveClientMixin {
   List<Clue> clueList = [];
   bool _loading;
+  
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
