@@ -35,3 +35,16 @@ lib/generated_plugin_registrant.dart
 
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+# Eclipse jdt project files
+**/.project
+**/.classpath
+**/.settings
+
+# flutter build generated files
+**/generated_plugin_registrant.dart
+**/generated_plugin_registrant.cc
+**/generated_plugin_registrant.h
+**/GeneratedPlugins.props
+**/generated_plugins.mk
+**/GeneratedPluginRegistrant.swift

@@ -44,13 +44,13 @@ jobs:
 
       - name: Prepare release files
         run: |
-          cp -r build/macos/Build/Products/Release/flutter_app.app flutter_app-macos-${{ steps.branch_name.outputs.SOURCE_NAME }}.app
-          zip flutter_app-macos-${{ steps.branch_name.outputs.SOURCE_NAME }}.zip -r flutter_app-macos-${{ steps.branch_name.outputs.SOURCE_NAME }}.app
+          cp -r build/macos/Build/Products/Release/jeecgboot_app.app jeecgboot_app-macos-${{ steps.branch_name.outputs.SOURCE_NAME }}.app
+          zip jeecgboot_app-macos-${{ steps.branch_name.outputs.SOURCE_NAME }}.zip -r jeecgboot_app-macos-${{ steps.branch_name.outputs.SOURCE_NAME }}.app
 
       - uses: xresloader/upload-to-github-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          file: flutter_app-macos-${{ steps.branch_name.outputs.SOURCE_NAME }}.zip
+          file: jeecgboot_app-macos-${{ steps.branch_name.outputs.SOURCE_NAME }}.zip
           tags: true
           draft: false

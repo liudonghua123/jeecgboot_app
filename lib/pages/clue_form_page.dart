@@ -51,16 +51,16 @@ class _ClueFormPageState extends State<ClueFormPage> {
   void _onPopMenuTapped(CustomPopupMenu choice) async {
     print('select $choice');
     setState(() async {
-      FileType fileType = FileType.ANY;
+      FileType fileType = FileType.any;
       switch (choice.title) {
         case '添加视频':
-          fileType = FileType.VIDEO;
+          fileType = FileType.video;
           break;
         case '添加音频':
-          fileType = FileType.AUDIO;
+          fileType = FileType.audio;
           break;
         case '添加图片':
-          fileType = FileType.IMAGE;
+          fileType = FileType.image;
           break;
         default:
       }

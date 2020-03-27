@@ -31,7 +31,7 @@ class _ClueAttachmentPageState extends State<ClueAttachmentPage> {
     }
     Widget presentationWidget;
     switch (widget.fileType) {
-      case FileType.VIDEO:
+      case FileType.video:
         presentationWidget = VideoWidget(
           source: filePathSelected,
           width: MediaQuery.of(context).size.width,
@@ -39,13 +39,13 @@ class _ClueAttachmentPageState extends State<ClueAttachmentPage> {
           play: false,
         );
         break;
-      case FileType.AUDIO:
+      case FileType.audio:
         presentationWidget = AudioWidget(
             source: filePathSelected,
             width: MediaQuery.of(context).size.width,
             play: false);
         break;
-      case FileType.IMAGE:
+      case FileType.image:
         presentationWidget = Container(
             width: MediaQuery.of(context).size.width,
             height: 300,
