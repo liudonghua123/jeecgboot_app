@@ -11,15 +11,15 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 // import 'package:fancy_dialog/FancyTheme.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 
-class ClueFragment extends StatefulWidget {
-  ClueFragment({Key key}) : super(key: key);
+class CluePage extends StatefulWidget {
+  CluePage({Key key}) : super(key: key);
   static String tag = 'clue-fragment';
 
   @override
-  _ClueFragmentState createState() => _ClueFragmentState();
+  _CluePageState createState() => _CluePageState();
 }
 
-class _ClueFragmentState extends State<ClueFragment> with AutomaticKeepAliveClientMixin {
+class _CluePageState extends State<CluePage> with AutomaticKeepAliveClientMixin {
   List<Clue> clueList = [];
   bool _loading;
   

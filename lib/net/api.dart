@@ -14,16 +14,17 @@ class API {
   BaseOptions _options;
   Dio dio;
 
-  handleError(context, err) async {
+  handleError(context, err) {
     print('handleError $err');
     // Token失效，重新登录
-    if (err?.response?.data['message'] == "Token失效，请重新登录") {
-      var prefs = await SharedPreferences.getInstance();
-      prefs.remove('token');
-      print("prefs.remove('token')");
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (BuildContext context) => LoginPage()),
-          ModalRoute.withName(WelcomePage.tag));
+    if (err?.response?.data != null && err?.response?.data['message'] == "Token失效，请重新登录") {
+      SharedPreferences.getInstance().then((prefs) {
+        prefs.remove('token');
+        print("prefs.remove('token')");
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (BuildContext context) => LoginPage()),
+            ModalRoute.withName(WelcomePage.tag));
+      });
     }
   }
 

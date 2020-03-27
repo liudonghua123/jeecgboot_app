@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:jeecgboot_app/pages/login_page.dart';
+import 'package:jeecgboot_app/pages/welcome_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../redux.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -211,7 +214,15 @@ class _ProfilePageState extends State<ProfilePage> {
               child: ListTile(
                 leading: Icon(Icons.exit_to_app),
                 title: Text("退出"),
-                onTap: () {},
+                onTap: () async {
+                  var prefs = await SharedPreferences.getInstance();
+                  prefs.remove('token');
+                  print("prefs.remove('token')");
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => LoginPage()),
+                      ModalRoute.withName(WelcomePage.tag));
+                },
               ),
             ),
             const SizedBox(height: 60.0),

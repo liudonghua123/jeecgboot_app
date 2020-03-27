@@ -121,14 +121,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/logo.png
-    - assets/alucard.jpg
-    - assets/001-boy.png
-    - assets/fine-cut.mp3
-    - assets/loveyou-cut.mp4
-    - assets/men_wearing_jacket.gif
-    - assets/space_demo.flr
-    - config.yaml
+    - assets/
   # fonts:
   #     - family: Nunito
   #       fonts:

@@ -17,6 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   // https://www.developerlibs.com/2018/09/flutter-form-validation-in-flutter.html
   // https://www.filledstacks.com/snippet/form-validation-in-flutter-for-beginners/
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   String username, password;
   bool _validate = false;
 
@@ -80,18 +81,25 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: () async {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
-            bool isSuccess = await API.instance.login(context, username, password);
-            debugPrint('isSuccess: $isSuccess');
-            if (isSuccess) {
-              Navigator.of(context).pushReplacementNamed(HomePage.tag);
-            } else {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return MessageDialog(
-                      title: 'Failed', content: 'Login Failed');
-                },
-              );
+            bool isSuccess = false;
+            try {
+              isSuccess = await API.instance.login(context, username, password);
+              debugPrint('isSuccess: $isSuccess');
+              if (isSuccess) {
+                Navigator.of(context).pushReplacementNamed(HomePage.tag);
+              } else {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return MessageDialog(
+                        title: 'Failed', content: 'Login Failed');
+                  },
+                );
+              }
+            } catch (e) {
+              _scaffoldKey.currentState.showSnackBar(SnackBar(
+                content: Text('Login Failed with ${e.toString()}'),
+              ));
             }
           } else {
             // validation error
@@ -115,12 +123,14 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Login'),
       ),
       backgroundColor: Colors.white,
-      body: Center(
-        child: Form(
+      body: Builder(
+        builder: (BuildContext context) => Center(
+          child: Form(
             key: _formKey,
             autovalidate: _validate,
             child: ListView(
@@ -134,9 +144,11 @@ class _LoginPageState extends State<LoginPage> {
                 passwordTextFormField,
                 SizedBox(height: 24.0),
                 loginButton,
-                forgotLabel
+                forgotLabel,
               ],
-            )),
+            ),
+          ),
+        ),
       ),
     );
   }

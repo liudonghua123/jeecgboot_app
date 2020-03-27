@@ -29,13 +29,13 @@ class _WelcomePageState extends State<WelcomePage> {
     // check login status
     if (token != null) {
       debugPrint("navigate to HomePage");
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
       );
     } else {
       debugPrint("navigate to LoginPage");
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => LoginPage()),
       );
