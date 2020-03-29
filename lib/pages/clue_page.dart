@@ -36,7 +36,9 @@ class _CluePageState extends State<CluePage>
   }
 
   void loadData() async {
-    _loading = true;
+    setState(() {
+      _loading = true;
+    });
     try {
       List<Clue> _clueList = await API.instance.getXsList(context, 1, 1000);
       debugPrint('getXsList: $clueList');
@@ -201,14 +203,19 @@ class _CluePageState extends State<CluePage>
 
   void _handleDelete(BuildContext context, Clue item) async {
     showDialog(
-        context: context,
-        builder: (_) => ConfirmDialog(context, title: '删除', content: '确定删除这一项？',
-                onOkButtonPressed: () async {
-              // 执行删除操作
-              await API.instance.deleteXs(context, item.id);
-              // 重新加载列表数据
-              await loadData();
-              Navigator.of(context).pop();
-            }));
+      context: context,
+      builder: (_) => ConfirmDialog(
+        context,
+        title: '删除',
+        content: '确定删除这一项？',
+        onOkButtonPressed: () async {
+          // 执行删除操作
+          await API.instance.deleteXs(context, item.id);
+          // 重新加载列表数据
+          await loadData();
+          Navigator.of(context).pop();
+        },
+      ),
+    );
   }
 }

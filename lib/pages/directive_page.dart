@@ -28,7 +28,9 @@ class _DirectivePageState extends State<DirectivePage>
   }
 
   void loadData() async {
-    _loading = true;
+    setState(() {
+      _loading = true;
+    });
     try {
       List<Directive> _directiveList =
           await API.instance.getDirectiveList(context, 1, 1000);

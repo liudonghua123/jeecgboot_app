@@ -10,7 +10,67 @@ class ClueDetailPage extends StatelessWidget {
   final Clue clue;
   final List<ClueAttachment> clueFjList;
 
-  Widget buildContent(Clue item) {
+  Widget buildWxdjText(BuildContext context, String wxdj) {
+    Widget widget;
+    switch (wxdj) {
+      case 'wxdj_g':
+        widget = Text(
+          '危险等级: 高',
+          style: TextStyle(color: Theme.of(context).primaryColorDark, backgroundColor: Colors.red),
+        );
+        break;
+      case 'wxdj_z':
+        widget = Text(
+          '危险等级: 中',
+          style: TextStyle(color: Theme.of(context).primaryColorDark, backgroundColor: Colors.yellow),
+        );
+        break;
+      case 'wxdj_d':
+        widget = Text(
+          '危险等级: 低',
+          style: TextStyle(color: Theme.of(context).primaryColorDark, backgroundColor: Colors.green),
+        );
+        break;
+      default:
+        widget = Text(
+          '危险等级: 未知',
+          style: TextStyle(color: Theme.of(context).primaryColorDark),
+        );
+    }
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: widget,
+    );
+  }
+
+  Iterable<Widget> buildExtra(BuildContext context, Clue clue) {
+    var widgets = [
+      Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: Text(
+          '对比标记: ${clue.htbdbj == "Y" ? "是" : "否"}',
+          style: TextStyle(
+            color: Theme.of(context).primaryColorDark,
+          ),
+        ),
+      ),
+    ];
+    if (clue.htbdbj == "Y") {
+      widgets.add(buildWxdjText(context, clue.wxdj));
+      widgets.add(Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: Text(
+          '提示详情: ${clue.tsxq}',
+          style: TextStyle(
+            color: Theme.of(context).primaryColorDark,
+          ),
+        ),
+      ));
+    }
+    return widgets;
+  }
+
+  Widget buildContent(BuildContext context, Clue item) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,6 +119,7 @@ class ClueDetailPage extends StatelessWidget {
           ),
         ),
         SizedBox(height: 10),
+        ...buildExtra(context, item),
       ],
     );
   }
@@ -77,7 +138,7 @@ class ClueDetailPage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Card(
-                child: buildContent(clue),
+                child: buildContent(context, clue),
               ),
               SizedBox(height: 10),
               ListView.builder(
