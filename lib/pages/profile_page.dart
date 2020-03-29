@@ -18,9 +18,23 @@ class _ProfilePageState extends State<ProfilePage> {
     fontWeight: FontWeight.bold,
     fontSize: 20.0,
   );
+  String username = '';
+  @override
+  void initState() {
+    SharedPreferences.getInstance().then((prefs) {
+      setState(() {
+        username = prefs.get('username') ?? '';
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('我的'),
+      ),
       backgroundColor: Colors.grey.shade200,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -44,14 +58,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     leading: CircleAvatar(
                       child: Icon(Icons.person),
                     ),
-                    title: Text("Damodar Lohani"),
+                    title: Text(username),
                     onTap: () {},
-                  ),
-                  _buildDivider(),
-                  SwitchListTile(
-                    value: true,
-                    title: Text("Private Account"),
-                    onChanged: (val) {},
                   ),
                 ],
               ),
@@ -129,8 +137,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           return dialog;
                         },
                       );
-                      StoreProvider.of<AppState>(context)
-                          .dispatch(RefreshLocaleAction(locale));
+                      if (locale != null) {
+                        StoreProvider.of<AppState>(context)
+                            .dispatch(RefreshLocaleAction(locale));
+                      }
                     },
                   ),
                   _buildDivider(),
@@ -177,11 +187,13 @@ class _ProfilePageState extends State<ProfilePage> {
                             return dialog;
                           },
                         );
-                        StoreProvider.of<AppState>(context)
-                            .dispatch(RefreshThemeDataAction(ThemeData(
-                          primarySwatch: color,
-                          brightness: themeData.brightness,
-                        )));
+                        if (color != null) {
+                          StoreProvider.of<AppState>(context)
+                              .dispatch(RefreshThemeDataAction(ThemeData(
+                            primarySwatch: color,
+                            brightness: themeData.brightness,
+                          )));
+                        }
                       },
                     ),
                   ),

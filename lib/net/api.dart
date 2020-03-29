@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
+import 'package:jeecgboot_app/model/directive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import '../pages/login_page.dart';
@@ -69,6 +70,7 @@ class API {
             // 清除token信息
             var prefs = await SharedPreferences.getInstance();
             prefs.remove('token');
+            prefs.remove('username');
             print("prefs.remove('token')");
             _instance.dio.reject('Token失效，请重新登录');
           }
@@ -181,6 +183,7 @@ class API {
         _options.headers['X-Access-Token'] = _token;
         var prefs = await SharedPreferences.getInstance();
         prefs.setString('token', _token);
+        prefs.setString('username', username);
         print("prefs.setString('token', $_token)");
         return true;
       }
@@ -492,6 +495,80 @@ class API {
       throw e;
     }
   }
+  
+  /*
+    The request is using query string parameter like
+    _t: 1585459960
+    column: createTime
+    order: desc
+    field: id,,,lclb,rwlb,ybh,fqrbh,mblx,mbbh,rwzt,jsrbh,jssj,clyj,cljg,fqbmbh,mbbmbh,bjsj,fqsj,rwbt,ygdrk,fsyj,lzfs,fkjzsj,fksm,sjfksj,fqcs,action
+    pageNo: 1
+    pageSize: 10
+    The success response is
+    {
+        "success": true,
+        "message": "操作成功！",
+        "code": 200,
+        "result": {
+            "records": [{"jsrbh":"151952","cljg":"接收","fkjzsj":null,"rwzt":"未签收","fqcs":3,"rwlb":"事件信息","jssj":"2018-10-30","mblx":"事件信息","fqsj":"2018-10-25","clyj":null,"updateBy":null,"ygdrk":null,"id":"5054","lclb":"分发","fqrbh":"151951","rwbt":"毛蝌蚪有毒","mbbh":"5060","fqbmbh":"110","lzfs":null,"updateTime":null,"fsyj":null,"fksm":null,"sjfksj":null,"bjsj":null,"createBy":null,"createTime":null,"mbbmbh":"290","sysOrgCode":null,"ybh":"107"}],
+            "total": 2,
+            "size": 10,
+            "current": 1,
+            "orders": [],
+            "searchCount": true,
+            "pages": 1
+        },
+        "timestamp": 1582726163688
+    }
+   */
+  Future<List<Directive>> getDirectiveList(context, pageNo, pageSize,
+      {String column = 'createTime', String order = 'desc'}) async {
+    try {
+      await checkAndSetToken();
+      Response response = await dio.get(
+        '/xs/qbRwlz/list',
+        queryParameters: {
+          'pageNo': pageNo,
+          'pageSize': pageSize,
+        },
+      );
+      if (response?.data['success']) {
+        List<dynamic> records = response?.data['result']['records'];
+        return records.map((item) => Directive.fromJson(item)).toList();
+      }
+      return null;
+    } catch (e) {
+      handleError(context, e);
+      throw e;
+    }
+  }
+  
+  /*
+    The request is using query string parameter like
+    acceptALL: Y
+    The success response is
+    {"success":true,"message":"任务签收成功!签收[0]条指令","code":200,"result":null,"timestamp":1585460657081}
+   */
+  Future<String> acceptDirective(context) async {
+    try {
+      await checkAndSetToken();
+      Response response = await dio.post(
+        '/xs/qbRwlz/accept',
+        queryParameters: {
+          'acceptALL': 'Y',
+        },
+      );
+      if (response?.data['success']) {
+        return response?.data['message'];
+      }
+      return null;
+    } catch (e) {
+      handleError(context, e);
+      throw e;
+    }
+  }
+
+
 
   static String getStaticFilePath(fileName) {
     return '$_apiBaseUrl/sys/common/static/$fileName';

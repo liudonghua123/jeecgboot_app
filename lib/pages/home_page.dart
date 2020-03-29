@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
-import '../localization.dart';
+import 'package:jeecgboot_app/pages/directive_page.dart';
 import 'clue_page.dart';
 import 'profile_page.dart';
 
@@ -30,9 +30,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context).title),
-      ),
       // bottomNavigationBar: FancyBottomNavigation(
       //   tabs: [
       //     TabData(iconData: Icons.home, title: "主页"),
@@ -48,7 +45,8 @@ class _HomePageState extends State<HomePage> {
       // ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), title: Text("主页")),
+          BottomNavigationBarItem(icon: Icon(Icons.perm_contact_calendar), title: Text("指令")),
+          BottomNavigationBarItem(icon: Icon(Icons.assessment), title: Text("线索")),
           BottomNavigationBarItem(icon: Icon(Icons.people), title: Text("我的"))
         ],
         onTap: (int index) {
@@ -66,7 +64,7 @@ class _HomePageState extends State<HomePage> {
           onPageChanged: (index) {
             setState(() => _currentIndex = index);
           },
-          children: <Widget>[CluePage(), ProfilePage()],
+          children: <Widget>[DirectivePage(), CluePage(), ProfilePage()],
         ),
       ),
     );

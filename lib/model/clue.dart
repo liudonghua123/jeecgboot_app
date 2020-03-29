@@ -60,26 +60,35 @@ class Clue {
   /// 更新日期
   final DateTime updateTime;
 
-  Clue(
-      {this.id,
-      this.xsbt,
-      this.xsxq,
-      this.xsddbh,
-      this.xsddmc,
-      this.cjsj,
-      this.scsj,
-      this.cjrbh,
-      this.cjbmbh,
-      this.xslx,
-      this.wxdj,
-      this.tsxq,
-      this.htbdbj,
-      this.swsjbh,
-      this.zdasjqbxxbh,
-      this.createBy,
-      this.createTime,
-      this.updateBy,
-      this.updateTime});
+  /// 任务id
+  final DateTime rwid;
+
+  /// 封面媒体路劲
+  final String fmmtlj;
+
+  Clue({
+    this.id,
+    this.xsbt,
+    this.xsxq,
+    this.xsddbh,
+    this.xsddmc,
+    this.cjsj,
+    this.scsj,
+    this.cjrbh,
+    this.cjbmbh,
+    this.xslx,
+    this.wxdj,
+    this.tsxq,
+    this.htbdbj,
+    this.swsjbh,
+    this.zdasjqbxxbh,
+    this.createBy,
+    this.createTime,
+    this.updateBy,
+    this.updateTime,
+    this.rwid,
+    this.fmmtlj,
+  });
 
   factory Clue.fromJson(Map<String, dynamic> json) => _$ClueFromJson(json);
 

@@ -1,7 +1,0 @@
-{
-  "title": "App",
-  "@title": {
-    "description": "Title for the application",
-    "type": "text"
-  }
-}

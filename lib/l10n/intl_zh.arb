@@ -1,7 +1,0 @@
-{
-  "title": "应用",
-  "@title": {
-    "description": "Title for the application",
-    "type": "text"
-  }
-}

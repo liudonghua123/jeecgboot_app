@@ -92,7 +92,9 @@ class _LoginPageState extends State<LoginPage> {
                   context: context,
                   builder: (BuildContext context) {
                     return MessageDialog(
-                        title: 'Failed', content: 'Login Failed');
+                      title: 'Failed',
+                      content: 'Login Failed',
+                    );
                   },
                 );
               }

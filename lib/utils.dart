@@ -248,4 +248,13 @@ class TimeUtils {
   static double getProgress(int seconds, int duration) {
     return seconds / duration;
   }
+  
+}
+
+
+class ValueStyle {
+  final String value;
+  final TextStyle style;
+
+  ValueStyle(this.value, this.style);
 }

@@ -9,7 +9,6 @@ import './pages/login_page.dart';
 import './pages/home_page.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import './flutter_configuration.dart';
-import 'localization.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 FlutterConfiguration config;
@@ -40,11 +39,9 @@ class MyApp extends StatelessWidget {
       store: store,
       child: StoreBuilder<AppState>(
         builder: (context, store) => MaterialApp(
-          onGenerateTitle: (BuildContext context) =>
-              AppLocalizations.of(context).title,
+          title:'App',
           locale: store.state.locale,
           localizationsDelegates: [
-            AppLocalizationsDelegate.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
           ],
