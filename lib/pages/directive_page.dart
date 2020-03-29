@@ -62,7 +62,7 @@ class _DirectivePageState extends State<DirectivePage>
               }
             },
             child: Text('全部签收'),
-            color: Colors.blue,
+            color: Theme.of(context).primaryColorDark,
           )
         ],
       ),
@@ -83,10 +83,11 @@ class _DirectivePageState extends State<DirectivePage>
                   Text(
                     "正在加载中...",
                     style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white.withOpacity(0.6)),
-                  )
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                  ),
                 ],
               )
             : Stack(

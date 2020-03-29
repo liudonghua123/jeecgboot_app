@@ -88,6 +88,8 @@ dependencies:
   redux_thunk: ^0.3.0
   # https://pub.dev/packages/redux_logging
   redux_logging: ^0.4.0
+  # https://pub.dev/packages/wave
+  wave: ^0.0.8
 
   # https://github.com/flutter/website/blob/master/examples/internationalization/intl_example/lib/main.dart
   # https://pub.dev/packages/intl

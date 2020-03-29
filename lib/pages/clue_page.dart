@@ -73,10 +73,11 @@ class _CluePageState extends State<CluePage>
                   Text(
                     "正在加载中...",
                     style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white.withOpacity(0.6)),
-                  )
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                  ),
                 ],
               )
             : Stack(
