@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 import '../model/directive.dart';
 import '../utils.dart';
+import 'clue_page.dart';
 
 class DirectiveDetailPage extends StatelessWidget {
   DirectiveDetailPage({Key key, @required this.directive}) : super(key: key);
@@ -12,7 +14,20 @@ class DirectiveDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('指令详情'),
-        actions: <Widget>[],
+        actions: <Widget>[
+          RaisedButton(
+            onPressed: () async {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CluePage(rwid: directive.id),
+                ),
+              );
+            },
+            child: Text('查看相关线索'),
+            color: Theme.of(context).primaryColorDark,
+          )
+        ],
       ),
       body: Container(
         padding: EdgeInsets.all(10),

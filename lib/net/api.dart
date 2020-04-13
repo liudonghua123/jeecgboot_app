@@ -1,14 +1,16 @@
 import 'dart:async';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:jeecgboot_app/model/directive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/material.dart';
-import '../pages/login_page.dart';
-import '../pages/welcome_page.dart';
+
+import '../main.dart';
 import '../model/clue.dart';
 import '../model/clue_attachment.dart';
 import '../model/general_response.dart';
-import '../main.dart';
+import '../pages/login_page.dart';
+import '../pages/welcome_page.dart';
 
 class API {
   static String _apiBaseUrl;
@@ -246,6 +248,29 @@ class API {
       Response response = await dio.get(
         '/xs/qbSwxszb/list',
         queryParameters: {
+          'pageNo': pageNo,
+          'pageSize': pageSize,
+        },
+      );
+      if (response?.data['success']) {
+        List<dynamic> records = response?.data['result']['records'];
+        return records.map((item) => Clue.fromJson(item)).toList();
+      }
+      return null;
+    } catch (e) {
+      handleError(context, e);
+      throw e;
+    }
+  }
+  
+  Future<List<Clue>> getXsListByRwid(context, rwid, pageNo, pageSize,
+      {String column = 'createTime', String order = 'desc'}) async {
+    try {
+      await checkAndSetToken();
+      Response response = await dio.get(
+        '/xs/qbSwxszb/listByRwid',
+        queryParameters: {
+          'rwid': rwid,
           'pageNo': pageNo,
           'pageSize': pageSize,
         },

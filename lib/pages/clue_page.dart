@@ -1,19 +1,16 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import '../model/clue.dart';
-import '../utils.dart';
-import '../net/api.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+
 import './clue_detail_page.dart';
 import './clue_form_page.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-// import 'package:fancy_dialog/fancy_dialog.dart';
-// import 'package:fancy_dialog/FancyTheme.dart';
-import 'package:giffy_dialog/giffy_dialog.dart';
+import '../model/clue.dart';
+import '../net/api.dart';
+import '../utils.dart';
 
 class CluePage extends StatefulWidget {
-  CluePage({Key key}) : super(key: key);
+  CluePage({Key key, String this.rwid}) : super(key: key);
   static String tag = 'clue-fragment';
+  final String rwid;
 
   @override
   _CluePageState createState() => _CluePageState();
@@ -40,7 +37,13 @@ class _CluePageState extends State<CluePage>
       _loading = true;
     });
     try {
-      List<Clue> _clueList = await API.instance.getXsList(context, 1, 1000);
+      List<Clue> _clueList = [];
+      String rwid = widget.rwid;
+      if (rwid == null) {
+        _clueList = await API.instance.getXsList(context, 1, 1000);
+      } else {
+        _clueList = await API.instance.getXsListByRwid(context, rwid, 1, 1000);
+      }
       debugPrint('getXsList: $clueList');
       setState(() {
         _loading = false;
