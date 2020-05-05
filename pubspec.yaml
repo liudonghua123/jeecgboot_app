@@ -100,6 +100,8 @@ dependencies:
     git:
       url: git://github.com/liudonghua123/intl_translation.git
       ref: glob-path-parse
+  # https://pub.dev/packages/font_awesome_flutter
+  font_awesome_flutter: ^8.8.1
 
 dependency_overrides:
   # https://github.com/danvick/flutter_chips_input/issues/37

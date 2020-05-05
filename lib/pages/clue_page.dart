@@ -59,6 +59,7 @@ class _CluePageState extends State<CluePage>
     return Scaffold(
       appBar: AppBar(
         title: Text('线索'),
+        centerTitle: true,
       ),
       body: Container(
         padding: EdgeInsets.all(10),
@@ -87,76 +88,94 @@ class _CluePageState extends State<CluePage>
               )
             : Stack(
                 children: <Widget>[
-                  Container(
-                      child: ListView.builder(
-                    itemCount: clueList?.length ?? 0,
-                    itemBuilder: (context, index) {
-                      final item = clueList[index];
-                      return Slidable(
-                        actionPane: SlidableDrawerActionPane(),
-                        actionExtentRatio: 0.25,
-                        child: Card(
-                          child: ListTile(
-                            title: Text(
-                              item.xsbt,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            subtitle: Text(
-                              item.xsxq,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            onTap: () {
-                              _handleDetail(context, item);
+                  (clueList?.length ?? 0) != 0
+                      ? Container(
+                          child: ListView.builder(
+                            itemCount: clueList?.length,
+                            itemBuilder: (context, index) {
+                              final item = clueList[index];
+                              return Slidable(
+                                actionPane: SlidableDrawerActionPane(),
+                                actionExtentRatio: 0.25,
+                                child: Card(
+                                  child: ListTile(
+                                    leading: item.fmmtlj != null
+                                        ? ClipRRect(
+                                            child: Image.network(
+                                              '${API.getStaticFilePath(item.fmmtlj)}',
+                                              width: 50,
+                                              fit: BoxFit.fill,
+                                            ),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10)),
+                                          )
+                                        : null,
+                                    title: Text(
+                                      item.xsbt,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    subtitle: Text(
+                                      item.xsxq,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    onTap: () {
+                                      _handleDetail(context, item);
+                                    },
+                                  ),
+                                ),
+                                secondaryActions: <Widget>[
+                                  IconSlideAction(
+                                    caption: '编辑',
+                                    color: Colors.blue,
+                                    icon: Icons.edit,
+                                    onTap: () => {_handleEdit(context, item)},
+                                  ),
+                                  IconSlideAction(
+                                    caption: '删除',
+                                    color: Colors.red,
+                                    icon: Icons.delete,
+                                    onTap: () => {_handleDelete(context, item)},
+                                  ),
+                                ],
+                              );
                             },
                           ),
+                        )
+                      : Align(
+                          alignment: Alignment.center,
+                          child: Text('线索列表为空'),
                         ),
-                        secondaryActions: <Widget>[
-                          IconSlideAction(
-                            caption: '编辑',
-                            color: Colors.blue,
-                            icon: Icons.edit,
-                            onTap: () => {_handleEdit(context, item)},
-                          ),
-                          IconSlideAction(
-                            caption: '删除',
-                            color: Colors.red,
-                            icon: Icons.delete,
-                            onTap: () => {_handleDelete(context, item)},
-                          ),
-                        ],
-                      );
-                    },
-                  )),
                   Align(
                     alignment: Alignment.bottomRight,
                     child: Container(
-                        padding: EdgeInsets.all(20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            FloatingActionButton(
-                              heroTag: 'refresh',
-                              child: Icon(Icons.refresh),
-                              onPressed: () {
-                                _handleRefresh(context);
-                              },
-                            ),
-                            SizedBox(
-                              height: 16.0,
-                            ),
-                            FloatingActionButton(
-                              heroTag: 'add',
-                              child: Icon(Icons.add),
-                              onPressed: () {
-                                _handleAdd(context);
-                              },
-                            )
-                          ],
-                        )),
-                  )
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          FloatingActionButton(
+                            heroTag: 'refresh',
+                            child: Icon(Icons.refresh),
+                            onPressed: () {
+                              _handleRefresh(context);
+                            },
+                          ),
+                          SizedBox(
+                            height: 16.0,
+                          ),
+                          FloatingActionButton(
+                            heroTag: 'add',
+                            child: Icon(Icons.add),
+                            onPressed: () {
+                              _handleAdd(context);
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
       ),

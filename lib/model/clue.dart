@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+
 part 'clue.g.dart';
 
 @JsonSerializable()
@@ -61,7 +62,7 @@ class Clue {
   final DateTime updateTime;
 
   /// 任务id
-  final DateTime rwid;
+  final String rwid;
 
   /// 封面媒体路劲
   final String fmmtlj;

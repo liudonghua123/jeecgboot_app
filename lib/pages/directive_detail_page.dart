@@ -20,7 +20,9 @@ class _DirectiveDetailPageState extends State<DirectiveDetailPage> {
   @override
   void initState() {
     super.initState();
-    API.instance.getXsListByRwid(context, widget.directive.id, 1, 1000).then((clues) {
+    API.instance
+        .getXsListByRwid(context, widget.directive.id, 1, 1000)
+        .then((clues) {
       setState(() {
         hasClues = clues != null && clues.length > 0;
       });
@@ -34,20 +36,19 @@ class _DirectiveDetailPageState extends State<DirectiveDetailPage> {
       appBar: AppBar(
         title: Text('指令详情'),
         actions: <Widget>[
-          hasClues
-              ? RaisedButton(
-                  onPressed: () async {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CluePage(rwid: directive.id),
-                      ),
-                    );
-                  },
-                  child: Text('查看相关线索'),
-                  color: Theme.of(context).primaryColorDark,
-                )
-              : Container(),
+          RaisedButton.icon(
+            onPressed: () async {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CluePage(rwid: directive.id),
+                ),
+              );
+            },
+            icon: Icon(Icons.check_circle),
+            label: Text('查看相关线索'),
+            color: Theme.of(context).primaryColorDark,
+          ),
         ],
       ),
       body: Container(

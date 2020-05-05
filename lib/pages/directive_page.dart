@@ -50,8 +50,9 @@ class _DirectivePageState extends State<DirectivePage>
     return Scaffold(
       appBar: AppBar(
         title: Text('指令'),
+        centerTitle: true,
         actions: <Widget>[
-          RaisedButton(
+          RaisedButton.icon(
             onPressed: () async {
               try {
                 var result = await API.instance.acceptDirective(context);
@@ -64,7 +65,8 @@ class _DirectivePageState extends State<DirectivePage>
                 ));
               }
             },
-            child: Text('全部签收'),
+            icon: Icon(Icons.select_all),
+            label: Text('全部签收'),
             color: Theme.of(context).primaryColorDark,
           )
         ],
@@ -101,9 +103,6 @@ class _DirectivePageState extends State<DirectivePage>
                     itemBuilder: (context, index) {
                       final item = directiveList[index];
                       return Card(
-                        color: item.rwzt == '待签收'
-                            ? Colors.redAccent.withOpacity(0.5)
-                            : Colors.white,
                         child: ListTile(
                           leading: ClipRRect(
                             child: Image.asset(
@@ -113,22 +112,38 @@ class _DirectivePageState extends State<DirectivePage>
                             ),
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
-                          title:
-                              Text(item.rwbt, overflow: TextOverflow.ellipsis),
-                          subtitle: Text(item.rwzt),
-                          trailing: Column(
-                            mainAxisSize: MainAxisSize.min,
+                          title: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                '发起时间 ${item.fqsj != null ? DateFormat("yyyy-MM-dd").format(item.fqsj) : ''}',
-                                style: TextStyle(fontSize: 12),
-                              ),
-                              Text(
-                                '接收时间 ${item.jssj != null ? DateFormat("yyyy-MM-dd").format(item.jssj) : ''}',
-                                style: TextStyle(fontSize: 12),
+                              Text(item.rwbt,
+                                  style: TextStyle(fontSize: 16),
+                                  overflow: TextOverflow.ellipsis),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '发起时间 ${item.fqsj != null ? DateFormat("yyyy-MM-dd HH:mm").format(item.fqsj) : ''}',
+                                    style: TextStyle(
+                                        fontSize: 10, color: Colors.black45),
+                                  ),
+                                  SizedBox(width: 10),
+                                  Text(
+                                    '接收时间 ${item.jssj != null ? DateFormat("yyyy-MM-dd HH:mm").format(item.jssj) : ''}',
+                                    style: TextStyle(
+                                        fontSize: 10, color: Colors.black45),
+                                  ),
+                                ],
                               ),
                             ],
+                          ),
+                          subtitle: Text(
+                            item.rwzt,
+                            style: TextStyle(
+                              color: item.rwzt == '待签收'
+                                  ? Colors.redAccent.withOpacity(0.5)
+                                  : Colors.white,
+                            ),
                           ),
                           onTap: () {
                             _handleDetail(context, item);
