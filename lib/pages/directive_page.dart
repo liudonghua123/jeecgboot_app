@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:jeecgboot_app/model/directive.dart';
 import 'package:jeecgboot_app/net/api.dart';
 
@@ -104,8 +105,31 @@ class _DirectivePageState extends State<DirectivePage>
                             ? Colors.redAccent.withOpacity(0.5)
                             : Colors.white,
                         child: ListTile(
-                          title: Text(item.rwbt),
+                          leading: ClipRRect(
+                            child: Image.asset(
+                              'assets/ling.jpg',
+                              width: 50,
+                              fit: BoxFit.fill,
+                            ),
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                          title:
+                              Text(item.rwbt, overflow: TextOverflow.ellipsis),
                           subtitle: Text(item.rwzt),
+                          trailing: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '发起时间 ${item.fqsj != null ? DateFormat("yyyy-MM-dd").format(item.fqsj) : ''}',
+                                style: TextStyle(fontSize: 12),
+                              ),
+                              Text(
+                                '接收时间 ${item.jssj != null ? DateFormat("yyyy-MM-dd").format(item.jssj) : ''}',
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            ],
+                          ),
                           onTap: () {
                             _handleDetail(context, item);
                           },

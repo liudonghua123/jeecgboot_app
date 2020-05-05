@@ -104,7 +104,7 @@ class _CluePageState extends State<CluePage>
                             ),
                             subtitle: Text(
                               item.xsxq,
-                              maxLines: 3,
+                              maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                             onTap: () {

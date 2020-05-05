@@ -101,7 +101,9 @@ dependencies:
       url: git://github.com/liudonghua123/intl_translation.git
       ref: glob-path-parse
 
-
+dependency_overrides:
+  # https://github.com/danvick/flutter_chips_input/issues/37
+  flutter_chips_input: ^1.9.0-dev.1
 
 dev_dependencies:
   flutter_test:
