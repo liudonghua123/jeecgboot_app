@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:jeecgboot_app/redux.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_logging/redux_logging.dart';
 import 'package:redux_thunk/redux_thunk.dart';
-import './pages/welcome_page.dart';
-import './pages/login_page.dart';
-import './pages/home_page.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
+
 import './flutter_configuration.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import './pages/home_page.dart';
+import './pages/login_page.dart';
+import './pages/welcome_page.dart';
 
 FlutterConfiguration config;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // https://www.woolha.com/tutorials/flutter-setting-orientation-to-landscape-or-portrait
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   // await FlutterDownloader.initialize();
   config = await FlutterConfiguration.fromAsset('config.yaml');
   runApp(new MyApp());
