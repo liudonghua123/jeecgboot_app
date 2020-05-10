@@ -34,6 +34,9 @@ class Clue {
   /// 线索类型
   final String xslx;
 
+  /// 附加信息
+  final String fjxx;
+
   /// 后台计算结果：危险等级
   final String wxdj;
 
@@ -78,6 +81,7 @@ class Clue {
     this.cjrbh,
     this.cjbmbh,
     this.xslx,
+    this.fjxx,
     this.wxdj,
     this.tsxq,
     this.htbdbj,

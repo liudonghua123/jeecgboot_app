@@ -35,6 +35,7 @@ class _ClueFormPageState extends State<ClueFormPage> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   List<ClueAttachment> clueFjList = [];
   List<DictModel> clueXslx = [];
+  bool showFjxx = false;
 
   @override
   void initState() {
@@ -48,6 +49,12 @@ class _ClueFormPageState extends State<ClueFormPage> {
     }
     clueXslx = await API.instance.getDictItems(context, 'xs_xslx');
     setState(() {});
+  }
+
+  void _onChangeXslx(dynamic value) {
+    setState(() {
+      showFjxx = value == 'ry' || value == 'cl';
+    });
   }
 
   void _onPopMenuTapped(CustomPopupMenu choice) async {
@@ -167,7 +174,13 @@ class _ClueFormPageState extends State<ClueFormPage> {
                         .map((item) => DropdownMenuItem(
                             value: item.value, child: Text("${item.text}")))
                         .toList(),
+                    onChanged: _onChangeXslx,
                   ),
+                  showFjxx ? FormBuilderTextField(
+                    attribute: "fjxx",
+                    decoration: InputDecoration(labelText: "证件或者车牌号码"),
+                    initialValue: item.fjxx ?? '',
+                  ): Container(),
                   ExpansionTile(
                     title: Text('线索详细信息'),
                     children: <Widget>[

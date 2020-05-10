@@ -120,16 +120,20 @@ class _DirectivePageState extends State<DirectivePage>
                                   overflow: TextOverflow.ellipsis),
                               Row(
                                 mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
+                                  Icon(Icons.send, color: Colors.blue),
+                                  SizedBox(width: 5),
                                   Text(
-                                    '发起时间 ${item.fqsj != null ? DateFormat("yyyy-MM-dd HH:mm").format(item.fqsj) : ''}',
+                                    '${item.fqsj != null ? DateFormat("yyyy-MM-dd HH:mm").format(item.fqsj) : ''}',
                                     style: TextStyle(
                                         fontSize: 10, color: Colors.black45),
                                   ),
                                   SizedBox(width: 10),
+                                  Icon(Icons.check, color: Colors.green),
+                                  SizedBox(width: 5),
                                   Text(
-                                    '接收时间 ${item.jssj != null ? DateFormat("yyyy-MM-dd HH:mm").format(item.jssj) : ''}',
+                                    '${item.jssj != null ? DateFormat("yyyy-MM-dd HH:mm").format(item.jssj) : ''}',
                                     style: TextStyle(
                                         fontSize: 10, color: Colors.black45),
                                   ),
