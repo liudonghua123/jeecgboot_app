@@ -44,17 +44,10 @@ class _ClueFormPageState extends State<ClueFormPage> {
 
   void _init() async {
     if (widget.data.id != null) {
-      List<ClueAttachment> _clueFjList =
-          await API.instance.getXsFj(context, widget.data.id);
-      setState(() {
-        clueFjList = _clueFjList;
-      });
+      clueFjList = await API.instance.getXsFj(context, widget.data.id);
     }
-    List<DictModel> _clueXslx =
-        await API.instance.getDictItems(context, 'xs_xslx');
-    setState(() {
-      clueXslx = _clueXslx;
-    });
+    clueXslx = await API.instance.getDictItems(context, 'xs_xslx');
+    setState(() {});
   }
 
   void _onPopMenuTapped(CustomPopupMenu choice) async {
