@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:jeecgboot_app/model/dict_model.dart';
 import 'package:jeecgboot_app/model/directive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -593,6 +594,22 @@ class API {
     }
   }
 
+  Future<List<DictModel>> getDictItems(context, String dictCode) async {
+    try {
+      await checkAndSetToken();
+      Response response = await dio.get(
+        '/sys/dict/getDictItems/${dictCode}'
+      );
+      if (response?.data['success']) {
+        List<dynamic> records = response?.data['result'];
+        return records.map((item) => DictModel.fromJson(item)).toList();
+      }
+      return null;
+    } catch (e) {
+      handleError(context, e);
+      throw e;
+    }
+  }
 
 
   static String getStaticFilePath(fileName) {

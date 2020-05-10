@@ -1,12 +1,14 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:jeecgboot_app/model/dict_model.dart';
+
+import './clue_attachment_page.dart';
 import '../model/clue.dart';
 import '../model/clue_attachment.dart';
 import '../net/api.dart';
 import '../utils.dart';
-import './clue_attachment_page.dart';
 
 class ClueFormPage extends StatefulWidget {
   ClueFormPage({Key key, this.data}) : super(key: key);
@@ -32,6 +34,7 @@ List<CustomPopupMenu> choices = <CustomPopupMenu>[
 class _ClueFormPageState extends State<ClueFormPage> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   List<ClueAttachment> clueFjList = [];
+  List<DictModel> clueXslx = [];
 
   @override
   void initState() {
@@ -41,11 +44,17 @@ class _ClueFormPageState extends State<ClueFormPage> {
 
   void _init() async {
     if (widget.data.id != null) {
-      List<ClueAttachment> result = await API.instance.getXsFj(context, widget.data.id);
+      List<ClueAttachment> _clueFjList =
+          await API.instance.getXsFj(context, widget.data.id);
       setState(() {
-        clueFjList = result;
+        clueFjList = _clueFjList;
       });
     }
+    List<DictModel> _clueXslx =
+        await API.instance.getDictItems(context, 'xs_xslx');
+    setState(() {
+      clueXslx = _clueXslx;
+    });
   }
 
   void _onPopMenuTapped(CustomPopupMenu choice) async {
@@ -158,12 +167,12 @@ class _ClueFormPageState extends State<ClueFormPage> {
                   FormBuilderDropdown(
                     attribute: "xslx",
                     decoration: InputDecoration(labelText: "线索类型"),
-                    initialValue: item.xslx ?? '一般',
+                    initialValue: item.xslx,
                     hint: Text('选择线索类型'),
                     validators: [FormBuilderValidators.required()],
-                    items: ['非常重要', '重要', '一般']
-                        .map((item) =>
-                            DropdownMenuItem(value: item, child: Text("$item")))
+                    items: clueXslx
+                        .map((item) => DropdownMenuItem(
+                            value: item.value, child: Text("${item.text}")))
                         .toList(),
                   ),
                   ExpansionTile(
@@ -249,7 +258,8 @@ class _ClueFormPageState extends State<ClueFormPage> {
                             },
                           ),
                           onTap: () {
-                            Widget content = getDialogContent(context, item.wjlj);
+                            Widget content =
+                                getDialogContent(context, item.wjlj);
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
