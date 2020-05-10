@@ -35,7 +35,7 @@ const RESOURCES = {
 "assets/LICENSE": "dfaab7fa8b96d562c5858d59282a7ee8",
 "assets/config.yaml": "1d02a20bca886b2b203f3c697a6c8528",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
-"main.dart.js": "59ada5fd8bf2dff84a268cb21f34d6bb",
+"main.dart.js": "21d025c50c9ffb3fa77b51c722f00c09",
 "manifest.json": "e5f45f50aef780679d64589f70efe980"
 };
 
