@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:giffy_dialog/giffy_dialog.dart';
-import 'widgets/audio_widget.dart';
-import 'widgets/video_widget.dart';
-import './net/api.dart';
-import 'package:downloader/downloader.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:path_provider/path_provider.dart';
 
+import './net/api.dart';
+import 'widgets/audio_widget.dart';
+import 'widgets/video_widget.dart';
+
 LoadingDialog({String loadingText = 'Loading...'}) => AlertDialog(
+      contentPadding: const EdgeInsets.all(5),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(5.0))),
       title: Flex(
@@ -29,6 +30,7 @@ LoadingDialog({String loadingText = 'Loading...'}) => AlertDialog(
 
 MessageDialog({String title = 'Message', @required String content}) =>
     AlertDialog(
+      contentPadding: const EdgeInsets.all(5),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(5.0))),
       title: Text(title),
@@ -37,6 +39,7 @@ MessageDialog({String title = 'Message', @required String content}) =>
 
 MultiMediaDialog({String title = 'MultiMedia', @required Widget content}) =>
     AlertDialog(
+      contentPadding: const EdgeInsets.all(5),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(5.0))),
       title: Text(title),
@@ -149,57 +152,56 @@ Widget getDialogContent(BuildContext context, String fileName) {
   );
   switch (fileType) {
     case MEDIA_TYPE.video:
-      content = Container(
-          width: 300,
-          height: 350,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              VideoWidget(source: fileUrl),
-              Row(
-                children: <Widget>[Expanded(child: downloadButton)],
-              )
-            ],
-          ));
+      content = Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+      VideoWidget(
+        source: fileUrl,
+        width: 300,
+        height: 250,
+      ),
+      Row(
+        children: <Widget>[Expanded(child: downloadButton)],
+      )
+        ],
+      );
       break;
     case MEDIA_TYPE.audio:
-      content = Container(
-          width: 300,
-          height: 200,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              AudioWidget(source: fileUrl),
-              Row(
-                children: <Widget>[Expanded(child: downloadButton)],
-              )
-            ],
-          ));
+      content = Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+      AudioWidget(
+        source: fileUrl,
+        width: 300,
+        height: 150,
+      ),
+      Row(
+        children: <Widget>[Expanded(child: downloadButton)],
+      )
+        ],
+      );
       break;
     case MEDIA_TYPE.picture:
-      content = Container(
-          width: 300,
-          height: 200,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Image.network(
-                fileUrl,
-                fit: BoxFit.cover,
-              ),
-              Row(
-                children: <Widget>[Expanded(child: downloadButton)],
-              )
-            ],
-          ));
+      content = Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+      Image.network(
+        fileUrl,
+        fit: BoxFit.cover,
+        width: 300,
+        height: 200,
+      ),
+      Row(
+        children: <Widget>[Expanded(child: downloadButton)],
+      )
+        ],
+      );
       break;
     default:
-      content = Container(
-        width: 300,
-        height: 100,
-        padding: EdgeInsets.all(10),
-        child: Column(children: <Widget>[Expanded(child: downloadButton)]),
-      );
+      content = downloadButton;
   }
   return content;
 }
@@ -248,9 +250,7 @@ class TimeUtils {
   static double getProgress(int seconds, int duration) {
     return seconds / duration;
   }
-  
 }
-
 
 class ValueStyle {
   final String value;

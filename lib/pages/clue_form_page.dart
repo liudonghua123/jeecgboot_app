@@ -235,40 +235,39 @@ class _ClueFormPageState extends State<ClueFormPage> {
             ),
             Text('附件详情',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.w300)),
-            SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 300,
-                child: Card(
-                  child: ListView.builder(
-                    itemCount: clueFjList?.length ?? 0,
-                    itemBuilder: (context, index) {
-                      final item = clueFjList[index];
-                      return ListTile(
-                          leading: getLeadingIcon(item.wjlj),
-                          title: Text(item.fjmc ?? ''),
-                          subtitle: Text(item.scsbbm ?? ''),
-                          trailing: IconButton(
-                            icon: Icon(Icons.delete),
-                            onPressed: () async {
-                              setState(() {
-                                clueFjList.remove(item);
-                              });
-                            },
-                          ),
-                          onTap: () {
-                            Widget content =
-                                getDialogContent(context, item.wjlj);
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return MultiMediaDialog(
-                                    content: content,
-                                  );
-                                });
-                          });
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: clueFjList?.length ?? 0,
+              itemBuilder: (context, index) {
+                final item = clueFjList[index];
+                return ListTile(
+                  leading: getLeadingIcon(item.wjlj),
+                  title: Text(item.fjmc ?? ''),
+                  subtitle: Text(item.scsbbm ?? ''),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () async {
+                      setState(
+                        () {
+                          clueFjList.remove(item);
+                        },
+                      );
                     },
                   ),
-                ))
+                  onTap: () {
+                    Widget content = getDialogContent(context, item.wjlj);
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return MultiMediaDialog(
+                          content: content,
+                        );
+                      },
+                    );
+                  },
+                );
+              },
+            )
           ],
         ),
       ),
