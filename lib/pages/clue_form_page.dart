@@ -151,7 +151,7 @@ class _ClueFormPageState extends State<ClueFormPage> {
                     decoration: InputDecoration(labelText: "线索标题"),
                     initialValue: item.xsbt ?? '',
                     validators: [
-                      FormBuilderValidators.required(),
+                      FormBuilderValidators.required(errorText: '线索标题不能为空'),
                       FormBuilderValidators.min(5),
                     ],
                   ),
@@ -160,18 +160,17 @@ class _ClueFormPageState extends State<ClueFormPage> {
                     decoration: InputDecoration(labelText: "线索详情"),
                     initialValue: item.xsxq ?? '',
                     validators: [
-                      FormBuilderValidators.required(),
+                      FormBuilderValidators.required(errorText: '线索详情不能为空'),
                       FormBuilderValidators.min(5),
                     ],
                   ),
-                  FormBuilderDropdown(
+                  FormBuilderChoiceChip(
                     attribute: "xslx",
                     decoration: InputDecoration(labelText: "线索类型"),
                     initialValue: item.xslx,
-                    hint: Text('选择线索类型'),
-                    validators: [FormBuilderValidators.required()],
-                    items: clueXslx
-                        .map((item) => DropdownMenuItem(
+                    validators: [FormBuilderValidators.required(errorText: '线索类型不能为空')],
+                    options: clueXslx
+                        .map((item) => FormBuilderFieldOption(
                             value: item.value, child: Text("${item.text}")))
                         .toList(),
                     onChanged: _onChangeXslx,

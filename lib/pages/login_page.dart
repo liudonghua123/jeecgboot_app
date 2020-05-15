@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import './home_page.dart';
 import '../net/api.dart';
 import '../utils.dart';
@@ -37,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
       autofocus: false,
       initialValue: 'admin',
       decoration: InputDecoration(
-        hintText: 'Username',
+        hintText: '用户名',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
       ),
@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
       },
       validator: (value) {
         if (value.trim().isEmpty) {
-          return 'Please enter username';
+          return '请输入用户名';
         }
         return null;
       },
@@ -57,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
       initialValue: '123456',
       obscureText: true,
       decoration: InputDecoration(
-        hintText: 'Password',
+        hintText: '密码',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
       ),
@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
       },
       validator: (value) {
         if (value.trim().isEmpty) {
-          return 'Please enter password';
+          return '请输入密码';
         }
         return null;
       },
@@ -92,15 +92,15 @@ class _LoginPageState extends State<LoginPage> {
                   context: context,
                   builder: (BuildContext context) {
                     return MessageDialog(
-                      title: 'Failed',
-                      content: 'Login Failed',
+                      title: '失败',
+                      content: '登陆失败',
                     );
                   },
                 );
               }
             } catch (e) {
               _scaffoldKey.currentState.showSnackBar(SnackBar(
-                content: Text('Login Failed with ${e.toString()}'),
+                content: Text('登陆失败： ${e.toString()}'),
               ));
             }
           } else {
@@ -111,14 +111,14 @@ class _LoginPageState extends State<LoginPage> {
           }
         },
         padding: EdgeInsets.all(12),
-        color: Colors.lightBlueAccent,
-        child: Text('Log In', style: TextStyle(color: Colors.white)),
+        color: Theme.of(context).primaryColor,
+        child: Text('登陆', style: TextStyle(color: Colors.white)),
       ),
     );
 
     final forgotLabel = FlatButton(
       child: Text(
-        'Forgot password123?',
+        '忘记密码?',
         style: TextStyle(color: Colors.black54),
       ),
       onPressed: () async {},
@@ -127,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text('涉稳线索采集'),
       ),
       backgroundColor: Colors.white,
       body: Builder(

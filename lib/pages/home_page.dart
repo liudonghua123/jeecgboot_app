@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:jeecgboot_app/pages/directive_page.dart';
+
 import 'clue_page.dart';
 import 'profile_page.dart';
 
@@ -45,8 +45,8 @@ class _HomePageState extends State<HomePage> {
       // ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.perm_contact_calendar), title: Text("指令")),
-          BottomNavigationBarItem(icon: Icon(Icons.assessment), title: Text("线索")),
+          BottomNavigationBarItem(icon: Icon(Icons.perm_contact_calendar), title: Text("指令办理")),
+          BottomNavigationBarItem(icon: Icon(Icons.assessment), title: Text("线索采集")),
           BottomNavigationBarItem(icon: Icon(Icons.people), title: Text("我的"))
         ],
         onTap: (int index) {
