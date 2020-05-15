@@ -120,7 +120,7 @@ class _ClueFormPageState extends State<ClueFormPage> {
                 children: <Widget>[
                   FormBuilderTextField(
                     attribute: "xsbt",
-                    decoration: InputDecoration(labelText: "线索标题"),
+                    decoration: InputDecoration(labelText: "标题"),
                     initialValue: item.xsbt ?? '',
                     validators: [
                       FormBuilderValidators.required(errorText: '线索标题不能为空'),
@@ -128,17 +128,17 @@ class _ClueFormPageState extends State<ClueFormPage> {
                     ],
                   ),
                   FormBuilderTextField(
-                    attribute: "xsxq",
-                    decoration: InputDecoration(labelText: "线索详情"),
-                    initialValue: item.xsxq ?? '',
+                    attribute: "xsddmc",
+                    decoration: InputDecoration(labelText: "地点"),
+                    initialValue: item.xsddmc ?? '',
                     validators: [
                       FormBuilderValidators.required(errorText: '线索详情不能为空'),
-                      FormBuilderValidators.min(5),
+                      FormBuilderValidators.min(2),
                     ],
                   ),
                   FormBuilderChoiceChip(
                     attribute: "xslx",
-                    decoration: InputDecoration(labelText: "线索类型"),
+                    decoration: InputDecoration(labelText: "类型"),
                     initialValue: item.xslx,
                     validators: [
                       FormBuilderValidators.required(errorText: '线索类型不能为空')
@@ -152,23 +152,27 @@ class _ClueFormPageState extends State<ClueFormPage> {
                   showFjxx
                       ? FormBuilderTextField(
                           attribute: "fjxx",
-                          decoration: InputDecoration(labelText: "证件或者车牌号码"),
+                          decoration: InputDecoration(labelText: "证件/车牌号"),
                           initialValue: item.fjxx ?? '',
                         )
                       : Container(),
                   ExpansionTile(
-                    title: Text('线索详细信息'),
+                    title: Text('详细信息'),
                     children: <Widget>[
+                      FormBuilderTextField(
+                        attribute: "xsxq",
+                        decoration: InputDecoration(labelText: "详细信息"),
+                        initialValue: item.xsxq ?? '',
+                        validators: [
+                          //FormBuilderValidators.required(),
+                          //FormBuilderValidators.min(5),
+                        ],
+                      ),
                       FormBuilderTextField(
                         attribute: "xsddbh",
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(labelText: "地址编号"),
                         initialValue: item.xsddbh ?? '',
-                      ),
-                      FormBuilderTextField(
-                        attribute: "xsddmc",
-                        decoration: InputDecoration(labelText: "地址名称"),
-                        initialValue: item.xsddmc ?? '',
                       ),
                       FormBuilderDateTimePicker(
                         attribute: "cjsj",
@@ -199,7 +203,7 @@ class _ClueFormPageState extends State<ClueFormPage> {
                       FormBuilderTextField(
                         attribute: "swsjbh",
                         keyboardType: TextInputType.number,
-                        decoration: InputDecoration(labelText: "涉稳事件编号"),
+                        decoration: InputDecoration(labelText: "事件编号"),
                         initialValue: item.swsjbh ?? '',
                       ),
                       FormBuilderTextField(
