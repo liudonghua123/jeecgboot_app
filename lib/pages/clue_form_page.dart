@@ -73,12 +73,19 @@ class _ClueFormPageState extends State<ClueFormPage> {
           break;
         default:
       }
-      final result = await Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) {
-        return ClueAttachmentPage(
-          fileType: fileType,
-        );
-      }));
+      final result = await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            contentPadding: const EdgeInsets.all(10),
+            titlePadding: const EdgeInsets.all(5),
+            title: AppBar(title: Text("添加多媒体")),
+            content: ClueAttachmentPage(
+              fileType: fileType,
+            ),
+          );
+        },
+      );
       if (result != null) {
         setState(() {
           clueFjList.add(result);
@@ -168,18 +175,22 @@ class _ClueFormPageState extends State<ClueFormPage> {
                     attribute: "xslx",
                     decoration: InputDecoration(labelText: "线索类型"),
                     initialValue: item.xslx,
-                    validators: [FormBuilderValidators.required(errorText: '线索类型不能为空')],
+                    validators: [
+                      FormBuilderValidators.required(errorText: '线索类型不能为空')
+                    ],
                     options: clueXslx
                         .map((item) => FormBuilderFieldOption(
                             value: item.value, child: Text("${item.text}")))
                         .toList(),
                     onChanged: _onChangeXslx,
                   ),
-                  showFjxx ? FormBuilderTextField(
-                    attribute: "fjxx",
-                    decoration: InputDecoration(labelText: "证件或者车牌号码"),
-                    initialValue: item.fjxx ?? '',
-                  ): Container(),
+                  showFjxx
+                      ? FormBuilderTextField(
+                          attribute: "fjxx",
+                          decoration: InputDecoration(labelText: "证件或者车牌号码"),
+                          initialValue: item.fjxx ?? '',
+                        )
+                      : Container(),
                   ExpansionTile(
                     title: Text('线索详细信息'),
                     children: <Widget>[

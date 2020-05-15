@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:jeecgboot_app/model/clue_attachment.dart';
+
 import '../model/general_response.dart';
-import '../utils.dart';
 import '../net/api.dart';
 import '../widgets/audio_widget.dart';
 import '../widgets/video_widget.dart';
@@ -89,12 +89,8 @@ class _ClueAttachmentPageState extends State<ClueAttachmentPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: <Widget>[],
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(10),
+    return Container(
+      child: Material(
         child: SingleChildScrollView(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -104,7 +100,7 @@ class _ClueAttachmentPageState extends State<ClueAttachmentPage> {
             ),
             SizedBox(
               width: MediaQuery.of(context).size.width,
-              height: 300,
+              height: 200,
               child: Center(child: showFilePreview()),
             ),
             SizedBox(
