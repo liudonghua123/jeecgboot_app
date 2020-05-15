@@ -19,16 +19,20 @@ class ClueFormPage extends StatefulWidget {
 }
 
 class CustomPopupMenu {
-  CustomPopupMenu({this.title, this.icon});
+  CustomPopupMenu({this.title, this.icon, this.fileType});
   String title;
   IconData icon;
+  FileType fileType;
 }
 
 List<CustomPopupMenu> choices = <CustomPopupMenu>[
-  CustomPopupMenu(title: '添加视频', icon: Icons.music_video),
-  CustomPopupMenu(title: '添加音频', icon: Icons.audiotrack),
-  CustomPopupMenu(title: '添加图片', icon: Icons.photo),
-  CustomPopupMenu(title: '添加文件', icon: Icons.insert_drive_file),
+  CustomPopupMenu(
+      title: '添加视频', icon: Icons.music_video, fileType: FileType.video),
+  CustomPopupMenu(
+      title: '添加音频', icon: Icons.audiotrack, fileType: FileType.audio),
+  CustomPopupMenu(title: '添加图片', icon: Icons.photo, fileType: FileType.image),
+  CustomPopupMenu(
+      title: '添加文件', icon: Icons.insert_drive_file, fileType: FileType.any),
 ];
 
 class _ClueFormPageState extends State<ClueFormPage> {
@@ -57,22 +61,8 @@ class _ClueFormPageState extends State<ClueFormPage> {
     });
   }
 
-  void _onPopMenuTapped(CustomPopupMenu choice) async {
-    print('select $choice');
-    setState(() async {
-      FileType fileType = FileType.any;
-      switch (choice.title) {
-        case '添加视频':
-          fileType = FileType.video;
-          break;
-        case '添加音频':
-          fileType = FileType.audio;
-          break;
-        case '添加图片':
-          fileType = FileType.image;
-          break;
-        default:
-      }
+  _addAttachement(FileType fileType) {
+    return () async {
       final result = await Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) {
         return ClueAttachmentPage(
@@ -84,7 +74,7 @@ class _ClueFormPageState extends State<ClueFormPage> {
           clueFjList.add(result);
         });
       }
-    });
+    };
   }
 
   _saveClue(BuildContext context) async {
@@ -115,24 +105,6 @@ class _ClueFormPageState extends State<ClueFormPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(item.id != null ? '编辑' : '添加'),
-        actions: <Widget>[
-          PopupMenuButton<CustomPopupMenu>(
-            tooltip: '请选择添加文件类型',
-            onSelected: _onPopMenuTapped,
-            itemBuilder: (BuildContext context) {
-              return choices.map((CustomPopupMenu choice) {
-                return PopupMenuItem<CustomPopupMenu>(
-                  value: choice,
-                  child: FlatButton.icon(
-                    label: Text(choice.title),
-                    icon: Icon(choice.icon),
-                    onPressed: null,
-                  ),
-                );
-              }).toList();
-            },
-          )
-        ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -168,18 +140,22 @@ class _ClueFormPageState extends State<ClueFormPage> {
                     attribute: "xslx",
                     decoration: InputDecoration(labelText: "线索类型"),
                     initialValue: item.xslx,
-                    validators: [FormBuilderValidators.required(errorText: '线索类型不能为空')],
+                    validators: [
+                      FormBuilderValidators.required(errorText: '线索类型不能为空')
+                    ],
                     options: clueXslx
                         .map((item) => FormBuilderFieldOption(
                             value: item.value, child: Text("${item.text}")))
                         .toList(),
                     onChanged: _onChangeXslx,
                   ),
-                  showFjxx ? FormBuilderTextField(
-                    attribute: "fjxx",
-                    decoration: InputDecoration(labelText: "证件或者车牌号码"),
-                    initialValue: item.fjxx ?? '',
-                  ): Container(),
+                  showFjxx
+                      ? FormBuilderTextField(
+                          attribute: "fjxx",
+                          decoration: InputDecoration(labelText: "证件或者车牌号码"),
+                          initialValue: item.fjxx ?? '',
+                        )
+                      : Container(),
                   ExpansionTile(
                     title: Text('线索详细信息'),
                     children: <Widget>[
@@ -236,6 +212,19 @@ class _ClueFormPageState extends State<ClueFormPage> {
                   ),
                 ],
               ),
+            ),
+            Divider(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: choices.map((choice) {
+                return IconButton(
+                  color: Theme.of(context).primaryColor,
+                  icon: Icon(choice.icon),
+                  onPressed: _addAttachement(choice.fileType),
+                );
+              }).toList(),
             ),
             Divider(
               height: 10,
