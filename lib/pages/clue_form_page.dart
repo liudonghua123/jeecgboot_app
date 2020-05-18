@@ -156,6 +156,13 @@ class _ClueFormPageState extends State<ClueFormPage> {
                           initialValue: item.fjxx ?? '',
                         )
                       : Container(),
+                  showFjxx
+                      ? FormBuilderTextField(
+                          attribute: "sjh",
+                          decoration: InputDecoration(labelText: "手机号"),
+                          initialValue: item.sjh ?? '',
+                        )
+                      : Container(),
                   ExpansionTile(
                     title: Text('详细信息'),
                     children: <Widget>[

@@ -34,6 +34,7 @@ Clue _$ClueFromJson(Map<String, dynamic> json) {
         : DateTime.parse(json['updateTime'] as String),
     rwid: json['rwid'] as String,
     fmmtlj: json['fmmtlj'] as String,
+    sjh: json['sjh'] as String,
   );
 }
 
@@ -60,4 +61,5 @@ Map<String, dynamic> _$ClueToJson(Clue instance) => <String, dynamic>{
       'updateTime': instance.updateTime?.toIso8601String(),
       'rwid': instance.rwid,
       'fmmtlj': instance.fmmtlj,
+      'sjh': instance.sjh,
     };

@@ -70,6 +70,9 @@ class Clue {
   /// 封面媒体路劲
   final String fmmtlj;
 
+  /// 手机号
+  final String sjh;
+
   Clue({
     this.id,
     this.xsbt,
@@ -93,6 +96,7 @@ class Clue {
     this.updateTime,
     this.rwid,
     this.fmmtlj,
+    this.sjh,
   });
 
   factory Clue.fromJson(Map<String, dynamic> json) => _$ClueFromJson(json);

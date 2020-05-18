@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
           onPageChanged: (index) {
             setState(() => _currentIndex = index);
           },
-          children: <Widget>[DirectivePage(), CluePage(), ProfilePage()],
+          children: <Widget>[CluePage(), DirectivePage(), ProfilePage()],
         ),
       ),
     );
