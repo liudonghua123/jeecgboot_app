@@ -45,9 +45,11 @@ class _HomePageState extends State<HomePage> {
       // ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.perm_contact_calendar), title: Text("指令办理")),
-          BottomNavigationBarItem(icon: Icon(Icons.assessment), title: Text("线索采集")),
-          BottomNavigationBarItem(icon: Icon(Icons.people), title: Text("我的"))
+          BottomNavigationBarItem(
+              icon: Icon(Icons.filter_b_and_w), title: Text("线索采集")),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.archive), title: Text("指令办理")),
+          BottomNavigationBarItem(icon: Icon(Icons.people), title: Text("设置"))
         ],
         onTap: (int index) {
           setState(() {

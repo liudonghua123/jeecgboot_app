@@ -58,7 +58,7 @@ class _CluePageState extends State<CluePage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('线索'),
+        title: Text('线索采集'),
         centerTitle: true,
       ),
       body: Container(

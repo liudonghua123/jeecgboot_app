@@ -27,12 +27,12 @@ class CustomPopupMenu {
 
 List<CustomPopupMenu> choices = <CustomPopupMenu>[
   CustomPopupMenu(
-      title: '添加视频', icon: Icons.music_video, fileType: FileType.video),
+      title: '添加图片', icon: Icons.add_photo_alternate, fileType: FileType.image),
+  CustomPopupMenu(
+      title: '添加视频', icon: Icons.video_call, fileType: FileType.video),
   CustomPopupMenu(
       title: '添加音频', icon: Icons.audiotrack, fileType: FileType.audio),
-  CustomPopupMenu(title: '添加图片', icon: Icons.photo, fileType: FileType.image),
-  CustomPopupMenu(
-      title: '添加文件', icon: Icons.insert_drive_file, fileType: FileType.any),
+  CustomPopupMenu(title: '添加文件', icon: Icons.note_add, fileType: FileType.any),
 ];
 
 class _ClueFormPageState extends State<ClueFormPage> {

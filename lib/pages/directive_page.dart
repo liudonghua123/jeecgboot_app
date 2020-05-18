@@ -49,7 +49,7 @@ class _DirectivePageState extends State<DirectivePage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('指令'),
+        title: Text('指令办理'),
         centerTitle: true,
         actions: <Widget>[
           RaisedButton.icon(
@@ -122,7 +122,8 @@ class _DirectivePageState extends State<DirectivePage>
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.send, color: Colors.blue),
+                                  Icon(Icons.keyboard_arrow_right,
+                                      color: Colors.blue),
                                   SizedBox(width: 5),
                                   Text(
                                     '${item.fqsj != null ? DateFormat("yyyy-MM-dd HH:mm").format(item.fqsj) : ''}',
