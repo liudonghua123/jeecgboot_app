@@ -8,16 +8,16 @@ part of 'directive.dart';
 
 Directive _$DirectiveFromJson(Map<String, dynamic> json) {
   return Directive(
-    id: json['id'] as String,
-    createBy: json['createBy'] as String,
-    createTime: json['createTime'] == null
-        ? null
-        : DateTime.parse(json['createTime'] as String),
-    updateBy: json['updateBy'] as String,
-    updateTime: json['updateTime'] == null
-        ? null
-        : DateTime.parse(json['updateTime'] as String),
-    sysOrgCode: json['sysOrgCode'] as String,
+    rwlzbh: json['rwlzbh'] as String,
+    // createBy: json['createBy'] as String,
+    // createTime: json['createTime'] == null
+    //     ? null
+    //     : DateTime.parse(json['createTime'] as String),
+    // updateBy: json['updateBy'] as String,
+    // updateTime: json['updateTime'] == null
+    //     ? null
+    //     : DateTime.parse(json['updateTime'] as String),
+    // sysOrgCode: json['sysOrgCode'] as String,
     lclb: json['lclb'] as String,
     rwlb: json['rwlb'] as String,
     ybh: json['ybh'] as String,
@@ -49,12 +49,12 @@ Directive _$DirectiveFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$DirectiveToJson(Directive instance) => <String, dynamic>{
-      'id': instance.id,
-      'createBy': instance.createBy,
-      'createTime': instance.createTime?.toIso8601String(),
-      'updateBy': instance.updateBy,
-      'updateTime': instance.updateTime?.toIso8601String(),
-      'sysOrgCode': instance.sysOrgCode,
+      'rwlzbh': instance.rwlzbh,
+      // 'createBy': instance.createBy,
+      // 'createTime': instance.createTime?.toIso8601String(),
+      // 'updateBy': instance.updateBy,
+      // 'updateTime': instance.updateTime?.toIso8601String(),
+      // 'sysOrgCode': instance.sysOrgCode,
       'lclb': instance.lclb,
       'rwlb': instance.rwlb,
       'ybh': instance.ybh,

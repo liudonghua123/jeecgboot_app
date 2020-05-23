@@ -21,7 +21,8 @@ class API {
   handleError(context, err) {
     print('handleError $err');
     // Token失效，重新登录
-    if (err?.response?.data != null && err?.response?.data['message'] == "Token失效，请重新登录") {
+    if (err?.response?.data != null &&
+        err?.response?.data['message'] == "Token失效，请重新登录") {
       SharedPreferences.getInstance().then((prefs) {
         prefs.remove('token');
         print("prefs.remove('token')");
@@ -263,7 +264,7 @@ class API {
       throw e;
     }
   }
-  
+
   Future<List<Clue>> getXsListByRwid(context, rwid, pageNo, pageSize,
       {String column = 'createTime', String order = 'desc'}) async {
     try {
@@ -521,7 +522,7 @@ class API {
       throw e;
     }
   }
-  
+
   /*
     The request is using query string parameter like
     _t: 1585459960
@@ -548,7 +549,7 @@ class API {
     }
    */
   Future<List<Directive>> getDirectiveList(context, pageNo, pageSize,
-      {String column = 'createTime', String order = 'desc'}) async {
+      {String column = 'fqsj', String order = 'desc'}) async {
     try {
       await checkAndSetToken();
       Response response = await dio.get(
@@ -568,7 +569,7 @@ class API {
       throw e;
     }
   }
-  
+
   /*
     The request is using query string parameter like
     acceptALL: Y
@@ -597,9 +598,7 @@ class API {
   Future<List<DictModel>> getDictItems(context, String dictCode) async {
     try {
       await checkAndSetToken();
-      Response response = await dio.get(
-        '/sys/dict/getDictItems/${dictCode}'
-      );
+      Response response = await dio.get('/sys/dict/getDictItems/${dictCode}');
       if (response?.data['success']) {
         List<dynamic> records = response?.data['result'];
         return records.map((item) => DictModel.fromJson(item)).toList();
@@ -610,7 +609,6 @@ class API {
       throw e;
     }
   }
-
 
   static String getStaticFilePath(fileName) {
     return '$_apiBaseUrl/sys/common/static/$fileName';

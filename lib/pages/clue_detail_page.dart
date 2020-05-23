@@ -16,19 +16,25 @@ class ClueDetailPage extends StatelessWidget {
       case 'wxdj_g':
         widget = Text(
           '危险等级: 高',
-          style: TextStyle(color: Theme.of(context).primaryColorDark, backgroundColor: Colors.red),
+          style: TextStyle(
+              color: Theme.of(context).primaryColorDark,
+              backgroundColor: Colors.red),
         );
         break;
       case 'wxdj_z':
         widget = Text(
           '危险等级: 中',
-          style: TextStyle(color: Theme.of(context).primaryColorDark, backgroundColor: Colors.yellow),
+          style: TextStyle(
+              color: Theme.of(context).primaryColorDark,
+              backgroundColor: Colors.yellow),
         );
         break;
       case 'wxdj_d':
         widget = Text(
           '危险等级: 低',
-          style: TextStyle(color: Theme.of(context).primaryColorDark, backgroundColor: Colors.green),
+          style: TextStyle(
+              color: Theme.of(context).primaryColorDark,
+              backgroundColor: Colors.green),
         );
         break;
       default:
@@ -48,7 +54,7 @@ class ClueDetailPage extends StatelessWidget {
       Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: Text(
-          '对比标记: ${clue.htbdbj == "Y" ? "是" : "否"}',
+          '智能比标记: ${clue.htbdbj == "Y" ? "已进行智能比对" : "未进行智能比对"}',
           style: TextStyle(
             color: Theme.of(context).primaryColorDark,
           ),
@@ -60,7 +66,7 @@ class ClueDetailPage extends StatelessWidget {
       widgets.add(Padding(
         padding: const EdgeInsets.only(top: 8.0),
         child: Text(
-          '提示详情: ${clue.tsxq}',
+          '比对提示详情: ${clue.tsxq}',
           style: TextStyle(
             color: Theme.of(context).primaryColorDark,
           ),

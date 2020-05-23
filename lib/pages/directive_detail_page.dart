@@ -21,7 +21,7 @@ class _DirectiveDetailPageState extends State<DirectiveDetailPage> {
   void initState() {
     super.initState();
     API.instance
-        .getXsListByRwid(context, widget.directive.id, 1, 1000)
+        .getXsListByRwid(context, widget.directive.rwlzbh, 1, 1000)
         .then((clues) {
       setState(() {
         hasClues = clues != null && clues.length > 0;
@@ -41,7 +41,7 @@ class _DirectiveDetailPageState extends State<DirectiveDetailPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CluePage(rwid: directive.id),
+                  builder: (context) => CluePage(rwid: directive.rwlzbh),
                 ),
               );
             },

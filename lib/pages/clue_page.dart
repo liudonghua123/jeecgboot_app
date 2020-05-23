@@ -111,12 +111,12 @@ class _CluePageState extends State<CluePage>
                                           )
                                         : null,
                                     title: Text(
-                                      item.xsbt,
+                                      item.xsbt == null ? "" : item.xsbt,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     subtitle: Text(
-                                      item.xsxq,
+                                      item.xsxq == null ? "" : item.xsxq,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
