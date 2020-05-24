@@ -103,7 +103,10 @@ dependencies:
   # https://pub.dev/packages/font_awesome_flutter
   font_awesome_flutter: ^8.8.1
   # https://github.com/ja2375/multi_media_picker
-  multi_media_picker: ^0.2.3
+  multi_media_picker:
+    git:
+      url: https://github.com/liudonghua123/multi_media_picker.git
+      ref: fix_methodchannel_main_thread
 
 dependency_overrides:
   # https://github.com/danvick/flutter_chips_input/issues/37

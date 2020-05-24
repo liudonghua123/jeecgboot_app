@@ -495,9 +495,11 @@ packages:
   multi_media_picker:
     dependency: "direct main"
     description:
-      name: multi_media_picker
-      url: "https://pub.flutter-io.cn"
-    source: hosted
+      path: "."
+      ref: fix_methodchannel_main_thread
+      resolved-ref: dbf35363d5383970f32916941668ddd08243c646
+      url: "https://github.com/liudonghua123/multi_media_picker.git"
+    source: git
     version: "0.2.3"
   node_interop:
     dependency: transitive
