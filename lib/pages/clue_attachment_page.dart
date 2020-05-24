@@ -76,12 +76,12 @@ class _ClueAttachmentPageState extends State<ClueAttachmentPage> {
         source: isFromGallery ? ImageSource.gallery : ImageSource.camera,
         singleImage: true,
       );
-      if (medias != null) _filePathSelected = medias[0];
-    }
-    else if (widget.fileType == FileType.video) {
-      _filePathSelected = await MultiMediaPicker.pickVideo(
+      if (medias != null) _filePathSelected = medias[0].path;
+    } else if (widget.fileType == FileType.video) {
+      var media = await MultiMediaPicker.pickVideo(
         source: isFromGallery ? ImageSource.gallery : ImageSource.camera,
       );
+      if (media != null) _filePathSelected = media.path;
     } else {
       _filePathSelected = await FilePicker.getFilePath(type: widget.fileType);
     }
