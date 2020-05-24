@@ -102,6 +102,8 @@ dependencies:
       ref: glob-path-parse
   # https://pub.dev/packages/font_awesome_flutter
   font_awesome_flutter: ^8.8.1
+  # https://github.com/ja2375/multi_media_picker
+  multi_media_picker: ^0.2.3
 
 dependency_overrides:
   # https://github.com/danvick/flutter_chips_input/issues/37

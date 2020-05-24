@@ -1,10 +1,11 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:jeecgboot_app/model/clue_attachment.dart';
+import 'package:multi_media_picker/multi_media_picker.dart';
+
 import '../model/general_response.dart';
-import '../utils.dart';
 import '../net/api.dart';
 import '../widgets/audio_widget.dart';
 import '../widgets/video_widget.dart';
@@ -21,6 +22,7 @@ class _ClueAttachmentPageState extends State<ClueAttachmentPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String fjmc;
   String filePathSelected;
+  bool isFromGallery = false;
 
   Widget showFilePreview() {
     if (filePathSelected == null) {
@@ -68,7 +70,21 @@ class _ClueAttachmentPageState extends State<ClueAttachmentPage> {
   }
 
   _handleSelectFile() async {
-    var _filePathSelected = await FilePicker.getFilePath(type: widget.fileType);
+    var _filePathSelected = null;
+    if (widget.fileType == FileType.image) {
+      var medias = await MultiMediaPicker.pickImages(
+        source: isFromGallery ? ImageSource.gallery : ImageSource.camera,
+        singleImage: true,
+      );
+      if (medias != null) _filePathSelected = medias[0];
+    }
+    else if (widget.fileType == FileType.video) {
+      _filePathSelected = await MultiMediaPicker.pickVideo(
+        source: isFromGallery ? ImageSource.gallery : ImageSource.camera,
+      );
+    } else {
+      _filePathSelected = await FilePicker.getFilePath(type: widget.fileType);
+    }
     setState(() {
       filePathSelected = _filePathSelected;
       print('filePathSelected: $filePathSelected');
@@ -134,13 +150,28 @@ class _ClueAttachmentPageState extends State<ClueAttachmentPage> {
                 },
               ),
             ),
+            widget.fileType == FileType.image ||
+                    widget.fileType == FileType.video
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text('是否从gallery中选择'),
+                      Switch(
+                        value: isFromGallery,
+                        onChanged: (value) => this.setState(() {
+                          isFromGallery = value;
+                        }),
+                      )
+                    ],
+                  )
+                : Container(),
             SizedBox(
               height: 10,
             ),
             Row(children: <Widget>[
               Expanded(
                   child: RaisedButton.icon(
-                      color: Colors.blueAccent,
+                      color: Theme.of(context).primaryColor,
                       onPressed: _handleAddAttachment,
                       icon: Icon(Icons.add),
                       label: Text('添加'))),

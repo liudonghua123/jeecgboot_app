@@ -492,6 +492,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.9.6+3"
+  multi_media_picker:
+    dependency: "direct main"
+    description:
+      name: multi_media_picker
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.3"
   node_interop:
     dependency: transitive
     description:
