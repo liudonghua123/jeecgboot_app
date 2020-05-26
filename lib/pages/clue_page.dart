@@ -100,7 +100,7 @@ class _CluePageState extends State<CluePage>
                                 actionExtentRatio: 0.25,
                                 child: Card(
                                   child: ListTile(
-                                    leading: item.fmmtlj != null
+                                    trailing: item.fmmtlj != null
                                         ? ClipRRect(
                                             child: Image.network(
                                               '${API.getStaticFilePath(item.fmmtlj)}',
@@ -141,9 +141,6 @@ class _CluePageState extends State<CluePage>
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
-                                            Icon(Icons.check,
-                                                color: Colors.green),
-                                            SizedBox(width: 5),
                                             Icon(Icons.rv_hookup,
                                                 color: Colors.blueGrey),
                                             Text(
