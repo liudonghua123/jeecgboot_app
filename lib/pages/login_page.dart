@@ -28,7 +28,43 @@ class _LoginPageState extends State<LoginPage> {
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
         radius: 48.0,
-        child: Image.asset('assets/login_logo.png'),
+        child: Image.asset('assets/log_l_t.png'),
+      ),
+    );
+
+    Widget titleSection = new Container(
+      padding: const EdgeInsets.all(32.0),
+      child: new Row(
+        children: [
+          new Expanded(
+            child: new Column(
+              //crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                new Container(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: new Text(
+                    '涉稳线索采集',
+                    style: new TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 32,
+                    ),
+                  ),
+                ),
+                new Text(
+                  '',
+                  style: new TextStyle(
+                    color: Colors.grey[500],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // new Icon(
+          //   Icons.star,
+          //   color: Colors.red[500],
+          // ),
+          // new Text('41'),
+        ],
       ),
     );
 
@@ -127,8 +163,8 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('涉稳线索采集'),
-      ),
+          //title: Text('涉稳线索采集'),
+          ),
       backgroundColor: Colors.white,
       body: Builder(
         builder: (BuildContext context) => Center(
@@ -139,6 +175,8 @@ class _LoginPageState extends State<LoginPage> {
               shrinkWrap: true,
               padding: EdgeInsets.only(left: 24.0, right: 24.0),
               children: <Widget>[
+                titleSection,
+                SizedBox(height: 8.0),
                 logo,
                 SizedBox(height: 48.0),
                 usernameTextFormField,

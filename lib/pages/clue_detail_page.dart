@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../model/clue.dart';
 import '../model/clue_attachment.dart';
 import '../utils.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class ClueDetailPage extends StatelessWidget {
   ClueDetailPage({Key key, @required this.clue, @required this.clueFjList})
@@ -118,12 +119,13 @@ class ClueDetailPage extends StatelessWidget {
           ],
         ),
         SizedBox(height: 10),
-        Text(
-          item.xsxq ?? '',
-          style: TextStyle(
-            fontSize: 20,
-          ),
-        ),
+        buildXsxqHtmlText(context, item),
+        // Text(
+        //   item.xsxq ?? '',
+        //   style: TextStyle(
+        //     fontSize: 20,
+        //   ),
+        // ),
         SizedBox(height: 10),
         ...buildExtra(context, item),
       ],
@@ -134,7 +136,7 @@ class ClueDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('线索详情'),
+        title: Text('更多详情...'),
         actions: <Widget>[],
       ),
       body: SingleChildScrollView(
@@ -176,5 +178,9 @@ class ClueDetailPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  buildXsxqHtmlText(BuildContext context, Clue item) {
+    return HtmlWidget(item.xsxq ?? '', webView: true);
   }
 }
