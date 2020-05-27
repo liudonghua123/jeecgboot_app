@@ -244,7 +244,7 @@ class API {
     }
    */
   Future<List<Clue>> getXsList(context, pageNo, pageSize,
-      {String column = 'createTime', String order = 'desc'}) async {
+      {String column = 'cjsj', String order = 'desc'}) async {
     try {
       await checkAndSetToken();
       Response response = await dio.get(
@@ -266,7 +266,7 @@ class API {
   }
 
   Future<List<Clue>> getXsListByRwid(context, rwid, pageNo, pageSize,
-      {String column = 'createTime', String order = 'desc'}) async {
+      {String column = 'cjsj', String order = 'desc'}) async {
     try {
       await checkAndSetToken();
       Response response = await dio.get(
@@ -557,6 +557,9 @@ class API {
         queryParameters: {
           'pageNo': pageNo,
           'pageSize': pageSize,
+          'lzfs': 'XSSJZL',
+          'column': 'fqsj',
+          'order': 'desc',
         },
       );
       if (response?.data['success']) {
