@@ -99,28 +99,28 @@ Widget getLeadingIcon(String fileName) {
       icon = Icon(
         Icons.music_video,
         color: Colors.blue,
-        size: 30.0,
+        size: 60.0,
       );
       break;
     case MEDIA_TYPE.audio:
       icon = Icon(
         Icons.audiotrack,
         color: Colors.green,
-        size: 30.0,
+        size: 60.0,
       );
       break;
     case MEDIA_TYPE.picture:
       icon = Icon(
         Icons.photo,
         color: Colors.yellow,
-        size: 30.0,
+        size: 60.0,
       );
       break;
     default:
       icon = Icon(
         Icons.insert_drive_file,
         color: Colors.grey,
-        size: 30.0,
+        size: 60.0,
       );
   }
   return icon;
@@ -156,14 +156,14 @@ Widget getDialogContent(BuildContext context, String fileName) {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-      VideoWidget(
-        source: fileUrl,
-        width: 300,
-        height: 250,
-      ),
-      Row(
-        children: <Widget>[Expanded(child: downloadButton)],
-      )
+          VideoWidget(
+            source: fileUrl,
+            width: 300,
+            height: 250,
+          ),
+          Row(
+            children: <Widget>[Expanded(child: downloadButton)],
+          )
         ],
       );
       break;
@@ -172,14 +172,14 @@ Widget getDialogContent(BuildContext context, String fileName) {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-      AudioWidget(
-        source: fileUrl,
-        width: 300,
-        height: 150,
-      ),
-      Row(
-        children: <Widget>[Expanded(child: downloadButton)],
-      )
+          AudioWidget(
+            source: fileUrl,
+            width: 300,
+            height: 150,
+          ),
+          Row(
+            children: <Widget>[Expanded(child: downloadButton)],
+          )
         ],
       );
       break;
@@ -188,15 +188,15 @@ Widget getDialogContent(BuildContext context, String fileName) {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-      Image.network(
-        fileUrl,
-        fit: BoxFit.cover,
-        width: 300,
-        height: 200,
-      ),
-      Row(
-        children: <Widget>[Expanded(child: downloadButton)],
-      )
+          Image.network(
+            fileUrl,
+            fit: BoxFit.cover,
+            width: 300,
+            height: 200,
+          ),
+          Row(
+            children: <Widget>[Expanded(child: downloadButton)],
+          )
         ],
       );
       break;

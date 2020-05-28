@@ -115,7 +115,7 @@ class _DirectivePageState extends State<DirectivePage>
                           title: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(item.rwbt,
+                              Text((index + 1).toString() + "．" + item.rwbt,
                                   style: TextStyle(fontSize: 16),
                                   overflow: TextOverflow.ellipsis),
                               Row(
@@ -131,19 +131,20 @@ class _DirectivePageState extends State<DirectivePage>
                                         fontSize: 10, color: Colors.black45),
                                   ),
                                   SizedBox(width: 10),
-                                  Icon(Icons.check, color: Colors.green),
-                                  SizedBox(width: 5),
-                                  Text(
-                                    '${item.jssj != null ? DateFormat("yyyy-MM-dd HH:mm").format(item.jssj) : ''}',
-                                    style: TextStyle(
-                                        fontSize: 10, color: Colors.black45),
-                                  ),
+                                  //Icon(Icons.check, color: Colors.green),
+                                  //SizedBox(width: 5),
+                                  //Text(
+                                  // '${item.jssj != null ? DateFormat("yyyy-MM-dd HH:mm").format(item.jssj) : ''}',
+                                  //  style: TextStyle(
+                                  //      fontSize: 10, color: Colors.black45),
+                                  // ),
                                 ],
                               ),
                             ],
                           ),
                           subtitle: Text(
-                            item.rwzt,
+                            item.rwzt +
+                                '${item.jssj != null ? DateFormat("yyyy-MM-dd HH:mm").format(item.jssj) : ''}',
                             style: TextStyle(
                               color: item.rwzt == '待签收'
                                   ? Colors.redAccent.withOpacity(0.5)

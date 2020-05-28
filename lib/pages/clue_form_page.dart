@@ -10,6 +10,14 @@ import '../model/clue_attachment.dart';
 import '../net/api.dart';
 import '../utils.dart';
 
+import 'dart:async';
+
+import 'package:flutter/services.dart';
+import 'package:flutter_nfc_plugin/models/nfc_event.dart';
+import 'package:flutter_nfc_plugin/models/nfc_message.dart';
+import 'package:flutter_nfc_plugin/models/nfc_state.dart';
+import 'package:flutter_nfc_plugin/nfc_plugin.dart';
+
 class ClueFormPage extends StatefulWidget {
   ClueFormPage({Key key, this.data}) : super(key: key);
   Clue data;
@@ -42,6 +50,16 @@ class _ClueFormPageState extends State<ClueFormPage> {
   List<DictModel> clueXslx = [];
   bool showFjxx = false;
 
+  String nfcState = 'Unknown';
+  String nfcError = '';
+  String nfcMessage = '';
+  String nfcTechList = '';
+  String nfcId = '';
+  NfcMessage nfcMessageStartedWith;
+
+  NfcPlugin nfcPlugin = NfcPlugin();
+  StreamSubscription<NfcEvent> _nfcMesageSubscription;
+
   @override
   void initState() {
     super.initState();
@@ -53,12 +71,16 @@ class _ClueFormPageState extends State<ClueFormPage> {
       clueFjList = await API.instance.getXsFj(context, widget.data.id);
     }
     clueXslx = await API.instance.getDictItems(context, 'xs_xslx');
+
     setState(() {});
   }
 
   void _onChangeXslx(dynamic value) {
     setState(() {
       showFjxx = value == 'ry' || value == 'cl';
+      if (showFjxx) {
+        initPlatformState();
+      }
     });
   }
 
@@ -133,7 +155,7 @@ class _ClueFormPageState extends State<ClueFormPage> {
                     decoration: InputDecoration(labelText: "地点"),
                     initialValue: item.xsddmc ?? '',
                     validators: [
-                      FormBuilderValidators.required(errorText: '线索详情不能为空'),
+                      FormBuilderValidators.required(errorText: '地点不能为空'),
                       FormBuilderValidators.min(2),
                     ],
                   ),
@@ -150,6 +172,7 @@ class _ClueFormPageState extends State<ClueFormPage> {
                         .toList(),
                     onChanged: _onChangeXslx,
                   ),
+                  showFjxx ? Text('$nfcId') : Container(),
                   showFjxx
                       ? FormBuilderTextField(
                           attribute: "fjxx",
@@ -229,12 +252,19 @@ class _ClueFormPageState extends State<ClueFormPage> {
               height: 10,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: choices.map((choice) {
-                return IconButton(
-                  color: Theme.of(context).primaryColor,
-                  icon: Icon(choice.icon),
-                  onPressed: _addAttachement(choice.fileType),
+                return Container(
+                  height: 64.0,
+                  width: 76.0,
+                  child: IconButton(
+                    color: Theme.of(context).primaryColor,
+                    icon: Icon(
+                      choice.icon,
+                      size: 52.0,
+                    ),
+                    onPressed: _addAttachement(choice.fileType),
+                  ),
                 );
               }).toList(),
             ),
@@ -286,5 +316,54 @@ class _ClueFormPageState extends State<ClueFormPage> {
         child: Icon(Icons.save),
       ),
     );
+  }
+
+  Future<void> initPlatformState() async {
+    NfcState _nfcState;
+
+    try {
+      _nfcState = await nfcPlugin.nfcState;
+      print('NFC state is $_nfcState');
+    } on PlatformException {
+      print('Method "NFC state" exception was thrown');
+    }
+
+    try {
+      final NfcEvent _nfcEventStartedWith = await nfcPlugin.nfcStartedWith;
+      print('NFC event started with is ${_nfcEventStartedWith.toString()}');
+      if (_nfcEventStartedWith != null) {
+        setState(() {
+          nfcMessageStartedWith = _nfcEventStartedWith.message;
+        });
+      }
+    } on PlatformException {
+      print('Method "NFC event started with" exception was thrown');
+    }
+
+    if (_nfcState == NfcState.enabled) {
+      _nfcMesageSubscription = nfcPlugin.onNfcMessage.listen((NfcEvent event) {
+        if (event.error.isNotEmpty) {
+          setState(() {
+            nfcMessage = 'ERROR: ${event.error}';
+            nfcId = '';
+          });
+        } else {
+          setState(() {
+            nfcMessage = event.message.payload.toString();
+            nfcTechList = event.message.techList.toString();
+            nfcId = event.message.id;
+          });
+        }
+      });
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      nfcState = _nfcState.toString();
+    });
   }
 }

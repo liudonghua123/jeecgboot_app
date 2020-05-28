@@ -104,7 +104,7 @@ class _CluePageState extends State<CluePage>
                                         ? ClipRRect(
                                             child: Image.network(
                                               '${API.getStaticFilePath(item.fmmtlj)}',
-                                              width: 50,
+                                              width: 72,
                                               fit: BoxFit.fill,
                                             ),
                                             borderRadius: BorderRadius.all(
@@ -112,7 +112,11 @@ class _CluePageState extends State<CluePage>
                                           )
                                         : null,
                                     title: Text(
-                                      item.xsbt == null ? "" : item.xsbt,
+                                      item.xsbt == null
+                                          ? ""
+                                          : (index + 1).toString() +
+                                              "．" +
+                                              item.xsbt,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),

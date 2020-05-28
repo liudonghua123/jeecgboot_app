@@ -243,8 +243,7 @@ class API {
         "timestamp": 1582726163688
     }
    */
-  Future<List<Clue>> getXsList(context, pageNo, pageSize,
-      {String column = 'cjsj', String order = 'desc'}) async {
+  Future<List<Clue>> getXsList(context, pageNo, pageSize) async {
     try {
       await checkAndSetToken();
       Response response = await dio.get(
@@ -252,6 +251,8 @@ class API {
         queryParameters: {
           'pageNo': pageNo,
           'pageSize': pageSize,
+          'column': 'cjsj',
+          'order': 'desc'
         },
       );
       if (response?.data['success']) {

@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
       store: store,
       child: StoreBuilder<AppState>(
         builder: (context, store) => MaterialApp(
-          title:'App',
+          title: 'App',
           locale: store.state.locale,
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,
