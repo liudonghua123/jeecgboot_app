@@ -1,5 +1,5 @@
 name: jeecgboot_app
-description: A new Flutter project.
+description: 涉稳线索采集
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -103,6 +103,7 @@ dependencies:
   # https://pub.dev/packages/font_awesome_flutter
   font_awesome_flutter: ^8.8.1
   flutter_widget_from_html: ^0.3.3+4
+  flutter_nfc_plugin: ^0.0.6
 
   # https://github.com/ja2375/multi_media_picker
   multi_media_picker:
