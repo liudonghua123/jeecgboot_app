@@ -1,6 +1,13 @@
+import 'dart:async';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_nfc_plugin/models/nfc_event.dart';
+import 'package:flutter_nfc_plugin/models/nfc_message.dart';
+import 'package:flutter_nfc_plugin/models/nfc_state.dart';
+import 'package:flutter_nfc_plugin/nfc_plugin.dart';
 import 'package:intl/intl.dart';
 import 'package:jeecgboot_app/model/dict_model.dart';
 
@@ -9,14 +16,6 @@ import '../model/clue.dart';
 import '../model/clue_attachment.dart';
 import '../net/api.dart';
 import '../utils.dart';
-
-import 'dart:async';
-
-import 'package:flutter/services.dart';
-import 'package:flutter_nfc_plugin/models/nfc_event.dart';
-import 'package:flutter_nfc_plugin/models/nfc_message.dart';
-import 'package:flutter_nfc_plugin/models/nfc_state.dart';
-import 'package:flutter_nfc_plugin/nfc_plugin.dart';
 
 class ClueFormPage extends StatefulWidget {
   ClueFormPage({Key key, this.data}) : super(key: key);
@@ -254,14 +253,12 @@ class _ClueFormPageState extends State<ClueFormPage> {
             Row(
               //mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: choices.map((choice) {
-                return Container(
-                  height: 64.0,
-                  width: 76.0,
+                return Expanded(
                   child: IconButton(
                     color: Theme.of(context).primaryColor,
                     icon: Icon(
                       choice.icon,
-                      size: 52.0,
+                      size: 36.0,
                     ),
                     onPressed: _addAttachement(choice.fileType),
                   ),
