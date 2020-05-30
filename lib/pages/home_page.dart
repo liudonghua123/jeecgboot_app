@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:jeecgboot_app/model/clue.dart';
 import 'package:jeecgboot_app/pages/directive_page.dart';
 
 import 'clue_form_page.dart';
-import 'clue_page.dart';
 import 'profile_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -67,7 +67,11 @@ class _HomePageState extends State<HomePage> {
           onPageChanged: (index) {
             setState(() => _currentIndex = index);
           },
-          children: <Widget>[CluePage(), DirectivePage(), ProfilePage()],
+          children: <Widget>[
+            ClueFormPage(data: Clue()),
+            DirectivePage(),
+            ProfilePage(),
+          ],
           //children: <Widget>[ClueFormPage(), DirectivePage(), ProfilePage()],
         ),
       ),

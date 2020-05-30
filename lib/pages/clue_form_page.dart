@@ -10,6 +10,7 @@ import 'package:flutter_nfc_plugin/models/nfc_state.dart';
 import 'package:flutter_nfc_plugin/nfc_plugin.dart';
 import 'package:intl/intl.dart';
 import 'package:jeecgboot_app/model/dict_model.dart';
+import 'package:jeecgboot_app/pages/clue_page.dart';
 
 import './clue_attachment_page.dart';
 import '../model/clue.dart';
@@ -127,6 +128,19 @@ class _ClueFormPageState extends State<ClueFormPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(item.id != null ? '编辑' : '添加'),
+        actions: [
+          RaisedButton.icon(
+            onPressed: () async {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CluePage()),
+              );
+            },
+            icon: Icon(Icons.list),
+            label: Text('线索列表'),
+            color: Theme.of(context).primaryColorDark,
+          )
+        ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),

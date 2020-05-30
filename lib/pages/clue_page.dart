@@ -106,6 +106,7 @@ class _CluePageState extends State<CluePage>
                                             child: Image.network(
                                               '${API.getStaticFilePath(item.fmmtlj)}',
                                               width: 72,
+                                              height: 72,
                                               fit: BoxFit.fill,
                                             ),
                                             borderRadius: BorderRadius.all(
@@ -145,7 +146,7 @@ class _CluePageState extends State<CluePage>
                                                       ),
                                               ],
                                             ),
-                                            SizedBox(width: 30),
+                                            SizedBox(width: 10),
                                             Row(
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
