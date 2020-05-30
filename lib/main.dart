@@ -55,6 +55,10 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: store.state.themeData.primaryColor,
             brightness: store.state.themeData.brightness,
+            primaryColorDark: store.state.themeData.primaryColor,
+            accentColor: store.state.themeData.primaryColor,
+            highlightColor: store.state.themeData.primaryColor,
+            
           ),
           routes: routes,
           home: WelcomePage(),

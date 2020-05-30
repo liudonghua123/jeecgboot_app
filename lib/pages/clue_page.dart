@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
 
 import './clue_detail_page.dart';
 import './clue_form_page.dart';
@@ -95,6 +95,7 @@ class _CluePageState extends State<CluePage>
                             itemCount: clueList?.length,
                             itemBuilder: (context, index) {
                               final item = clueList[index];
+                              final bdbj = item.htbdbj == "Y";
                               return Slidable(
                                 actionPane: SlidableDrawerActionPane(),
                                 actionExtentRatio: 0.25,
@@ -125,51 +126,45 @@ class _CluePageState extends State<CluePage>
                                           CrossAxisAlignment.start,
                                       children: [
                                         Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
                                           children: [
-                                            Icon(Icons.keyboard_arrow_right,
-                                                color: Colors.blue),
-                                            SizedBox(width: 5),
-                                            Text(
-                                              '${item.cjsj != null ? DateFormat("yyyy-MM-dd HH:mm").format(item.cjsj) : ''}',
-                                              style: TextStyle(
-                                                  fontSize: 10,
-                                                  color: Colors.black45),
+                                            Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text('智能比对:'),
+                                                SizedBox(width: 5),
+                                                bdbj
+                                                    ? Icon(
+                                                        Icons.check_circle,
+                                                        size: 30.0,
+                                                        color: Colors.green,
+                                                      )
+                                                    : Icon(
+                                                        Icons.cancel,
+                                                        size: 30.0,
+                                                        color: Colors.blueGrey,
+                                                      ),
+                                              ],
+                                            ),
+                                            SizedBox(width: 30),
+                                            Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text('危险等级:'),
+                                                SizedBox(width: 5),
+                                                buildWxdjAvatar(
+                                                    context, item.wxdj),
+                                              ],
                                             ),
                                           ],
                                         ),
-                                        Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.rv_hookup,
-                                                color: Colors.blueGrey),
-                                            Text(
-                                              '${item.htbdbj == "Y" ? "已进行智能比对" : "未进行智能比对"}',
-                                              style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .primaryColorDark,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        item.htbdbj == "Y"
-                                            ? Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Icon(Icons.notifications,
-                                                      color: Colors.orange),
-                                                  buildWxdjText(
-                                                      context, item.wxdj),
-                                                ],
+                                        item.cjsj != null
+                                            ? Text(
+                                                '采集时间: ${DateFormat("yyyy-MM-dd HH:mm").format(item.cjsj)}',
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.black45),
                                               )
-                                            : Icon(Icons.block,
-                                                color: Colors.white),
+                                            : Container(),
                                       ],
                                     ),
                                     // subtitle: Text(
@@ -295,45 +290,6 @@ class _CluePageState extends State<CluePage>
           Navigator.of(context).pop();
         },
       ),
-    );
-  }
-
-  Widget buildWxdjText(BuildContext context, String wxdj) {
-    Widget widget;
-    switch (wxdj) {
-      case 'wxdj_g':
-        widget = Text(
-          '危险等级: 高',
-          style: TextStyle(
-              color: Theme.of(context).primaryColorDark,
-              backgroundColor: Colors.red),
-        );
-        break;
-      case 'wxdj_z':
-        widget = Text(
-          '危险等级: 中',
-          style: TextStyle(
-              color: Theme.of(context).primaryColorDark,
-              backgroundColor: Colors.yellow),
-        );
-        break;
-      case 'wxdj_d':
-        widget = Text(
-          '危险等级: 低',
-          style: TextStyle(
-              color: Theme.of(context).primaryColorDark,
-              backgroundColor: Colors.green),
-        );
-        break;
-      default:
-        widget = Text(
-          '危险等级: 未知',
-          style: TextStyle(color: Theme.of(context).primaryColorDark),
-        );
-    }
-    return Padding(
-      padding: const EdgeInsets.only(top: 8.0),
-      child: widget,
     );
   }
 }

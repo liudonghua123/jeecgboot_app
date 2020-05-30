@@ -5,6 +5,7 @@ import 'package:jeecgboot_app/pages/welcome_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
+
 import '../redux.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -100,7 +101,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   style: headerStyle,
                 ),
                 Card(
-                  color: Colors.white.withOpacity(0.5),
                   margin: const EdgeInsets.symmetric(
                     vertical: 8.0,
                     horizontal: 0,
@@ -270,7 +270,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                   ),
                 ),
-                const SizedBox(height: 60.0),
               ],
             ),
           ),

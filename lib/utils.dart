@@ -258,3 +258,51 @@ class ValueStyle {
 
   ValueStyle(this.value, this.style);
 }
+
+
+
+  Widget buildWxdjAvatar(BuildContext context, String wxdj) {
+    Widget widget;
+    switch (wxdj) {
+      case 'wxdj_g':
+        widget = CircleAvatar(
+          radius: 15,
+          backgroundColor: Colors.red,
+          child: Text(
+            '高',
+            style: TextStyle(fontSize: 12,color: Colors.white),
+          ),
+        );
+        break;
+      case 'wxdj_z':
+        widget = CircleAvatar(
+          radius: 15,
+          backgroundColor: Colors.green,
+          child: Text(
+            '中',
+            style: TextStyle(fontSize: 12,color: Colors.white),
+          ),
+        );
+        break;
+      case 'wxdj_d':
+        widget = CircleAvatar(
+          radius: 15,
+          backgroundColor: Colors.green,
+          child: Text(
+            '低',
+            style: TextStyle(fontSize: 12,color: Colors.white),
+          ),
+        );
+        break;
+      default:
+        widget = CircleAvatar(
+          radius: 15,
+          backgroundColor: Colors.grey,
+          child: Text(
+            '未知',
+            style: TextStyle(fontSize: 12,color: Colors.white),
+          ),
+        );
+    }
+    return widget;
+  }
