@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:jeecgboot_app/model/clue_attachment.dart';
 import 'package:multi_media_picker/multi_media_picker.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 import '../model/general_response.dart';
 import '../net/api.dart';
@@ -94,12 +95,19 @@ class _ClueAttachmentPageState extends State<ClueAttachmentPage> {
   _handleAddAttachment() async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
+      var pr = ProgressDialog(context,
+          type: ProgressDialogType.Normal,
+          isDismissible: false,
+          showLogs: true);
       try {
+        await pr.show();
         GeneralResponse result =
             await API.instance.upload(context, filePathSelected);
         Navigator.of(context).pop(
             ClueAttachment.fromJson({'wjlj': result.message, 'fjmc': fjmc}));
-      } catch (e) {}
+      } catch (e) {} finally {
+        await pr.hide();
+      }
     }
   }
 

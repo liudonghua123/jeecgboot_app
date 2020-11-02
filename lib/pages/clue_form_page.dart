@@ -11,6 +11,7 @@ import 'package:flutter_nfc_plugin/nfc_plugin.dart';
 import 'package:intl/intl.dart';
 import 'package:jeecgboot_app/model/dict_model.dart';
 import 'package:jeecgboot_app/pages/clue_page.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 import './clue_attachment_page.dart';
 import '../model/clue.dart';
@@ -102,6 +103,11 @@ class _ClueFormPageState extends State<ClueFormPage> {
 
   _saveClue(BuildContext context) async {
     if (_fbKey.currentState.saveAndValidate()) {
+      var pr = ProgressDialog(context,
+          type: ProgressDialogType.Normal,
+          isDismissible: false,
+          showLogs: true);
+      await pr.show();
       Map data = _fbKey.currentState.value;
       data['qbSwxszbfjList'] = clueFjList;
       var result;
@@ -118,6 +124,7 @@ class _ClueFormPageState extends State<ClueFormPage> {
       } else {
         result = await API.instance.addXs(context, data);
       }
+      await pr.show();
       Navigator.of(context).pop({'result': result});
     }
   }
